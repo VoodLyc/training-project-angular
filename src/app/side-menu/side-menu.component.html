@@ -1,0 +1,11 @@
+<div class="side-menu" [ngClass]="{'side-menu--collapsed': isCollapsed}">
+    <div class="side-menu-name">
+        <span class="side-menu-name__label">{{ isCollapsed ? '' : 'Coopang'}}</span>
+    </div>
+    <hr>
+    <div class="navbar">
+        <app-navbar [isCollapsed]="isCollapsed"></app-navbar>
+    </div>
+    <hr>
+    <app-user-details [user]="{userName: 'Zaki Deanra', title:'Cupang Collectors', imageUrl: 'https://images.generated.photos/3MPyvhym-oYQPHqv4u9VSC5s-LGb03Ay7PhKOikovOs/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NjI3ODU4LmpwZw.jpg'}" [isCollapsed]="isCollapsed"></app-user-details>
+</div>

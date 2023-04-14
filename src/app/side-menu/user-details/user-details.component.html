@@ -1,0 +1,9 @@
+<div class="user" [ngClass]="{'user--collapsed': isCollapsed}">
+    <div class="user-picture">
+        <img [src]="user.imageUrl" class="user-picture__img" alt="User profile picture">
+    </div>
+    <div class="user-details">
+        <span class="user-details__name">{{ user.userName }}</span>
+        <span class="user-details__title">{{ user.title }}</span>
+    </div>
+</div>

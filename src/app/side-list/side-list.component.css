@@ -1,0 +1,33 @@
+.side-list {
+    height: 100%;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid rgba(0, 0, 0, .08);
+    background-color: white;
+}
+
+.side-list__header {
+    width: 300px;
+    height: 150px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.side-list__header span {
+    font-size: 20px;
+    font-weight: bold;
+    color: #253262;
+    margin-left: 20px;
+}
+
+.side-list__header button {
+    font-size: 14px;
+    margin-right: 20px;
+    color: #478ffb;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
