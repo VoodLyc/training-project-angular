@@ -8,7 +8,7 @@
     <div class="cards-container">
         <app-card [height]="'150px'" [width]="'400px'">
             <div class="name-card__content">
-                <img [src]="pokemon.sprites.front_default" alt="front image of the pokemon">
+                <img [src]="getPokemonFrontImage()" alt="front image of the pokemon">
                 <span>{{ formatPokemonName() }}</span>
                 <i class="fa-sharp fa-solid fa-circle-play"></i>
             </div>
@@ -21,16 +21,16 @@
                 </div>
                 <div class="attributes-card__attribute-cell">
                     <span class="title">LENGHT</span>
-                    <span class="value"><b>{{ pokemon.height }}</b> m</span>
+                    <span class="value"><b>{{ pokemon ? pokemon.height : '' }}</b> m</span>
                 </div>
                 <div class="attributes-card__attribute-cell">
                     <span class="title">AGE</span>
-                    <span class="value"><b>{{ pokemon.height + 13 }}</b> month</span>
+                    <span class="value"><b>{{ pokemon ? pokemon.height + 13  : ''}}</b> month</span>
                 </div>
                 <div class="attributes-card__bid">
                     <i class='bx bx-info-square'></i>
                     <span class="title">Highest Bid</span>
-                    <span class="price">{{ '$' + (pokemon.weight + 20) }}</span>
+                    <span class="price">{{ pokemon ? '$' + (pokemon.weight + 20) : ''  }}</span>
                     <span class="legend">You can bid bigger than this number</span>
                 </div>
                 <div class="attributes-card__attribute-cell">
@@ -52,7 +52,7 @@
                     </div>
                     <i class="fa-solid fa-ellipsis-vertical icon dot-icon"></i>
                 </div>
-                <img [src]="pokemon.sprites.back_default" alt="back image of the pokemon">
+                <img [src]="getPokemonBackImage()" alt="back image of the pokemon">
                 <input type="text" name="currency-field" class="actuion-card__auction-input" value=""
                     data-type="currency" placeholder="$250.00" maxlength="13" />
                 <button class="shaded-button actuion-card__bid-button">Place Bid</button>

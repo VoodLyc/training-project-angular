@@ -11,6 +11,7 @@ import { MainContentComponent } from './main-content/main-content.component';
 import { SideListComponent } from './side-list/side-list.component';
 import { CardComponent } from './main-content/card/card.component';
 import { HeaderDetailsComponent } from './main-content/header-details/header-details.component';
+import { PreviewCardComponent } from './side-list/preview-card/preview-card.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HeaderDetailsComponent } from './main-content/header-details/header-det
     MainContentComponent,
     SideListComponent,
     CardComponent,
-    HeaderDetailsComponent
+    HeaderDetailsComponent,
+    PreviewCardComponent
   ],
   imports: [
     BrowserModule,

@@ -4,26 +4,6 @@
         <button>See All</button>
     </div>
     <div class="preview-cards-container">
-        <!-- <div class="card pokemon-preview-card">
-            <div class="pokemon-preview-card__img-container">
-                <img>
-            </div>
-            <span class="pokemon-name"></span>
-            <span>2 hours ago</span>
-        </div>
-        <div class="card pokemon-preview-card">
-            <div class="pokemon-preview-card__img-container">
-                <img>
-            </div>
-            <span class="pokemon-name"></span>
-            <span>2 hours ago</span>
-        </div>
-        <div class="card pokemon-preview-card">
-            <div class="pokemon-preview-card__img-container">
-                <img>
-            </div>
-            <span class="pokemon-name"></span>
-            <span>2 hours ago</span>
-        </div> -->
+        <app-preview-card *ngFor="let index of previewPokemonIndices" [pokemonId]="index" (click)="onClickPreviewPokemon(index)"></app-preview-card>
     </div>
 </div>

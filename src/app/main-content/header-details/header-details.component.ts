@@ -10,18 +10,26 @@ export class HeaderDetailsComponent {
   @Input() pokemon
 
   formatPokemonName() {
-    return capitalizeText(this.pokemon.name)
+    if(this.pokemon) {
+      return capitalizeText(this.pokemon.name)
+    }
   }
 
   formatPokemonType() {
-    return this.pokemon.types[0].type.name.toUpperCase()
+    if(this.pokemon) {
+      return this.pokemon.types[0].type.name.toUpperCase()
+    }
   }
 
   formatPokemonAbility() {
-    return capitalizeText(this.pokemon.abilities[0].ability.name)
+    if(this.pokemon) {
+      return capitalizeText(this.pokemon.abilities[0].ability.name)
+    }
   }
 
   formatReviews() {
-    return this.pokemon.base_experience + ' Reviews'
+    if(this.pokemon) {
+      return this.pokemon.base_experience + ' Reviews'
+    }
   }
 }

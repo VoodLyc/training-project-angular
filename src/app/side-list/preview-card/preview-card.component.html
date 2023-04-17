@@ -1,0 +1,9 @@
+<app-card [height]="'200px'" [width]="'200px'">
+    <div class="pokemon-preview-card">
+        <div class="pokemon-preview-card__img-container">
+            <img [src]="getPokemonImg()">
+        </div>
+        <span class="pokemon-name">{{ formatPokemonName() }}</span>
+        <span>2 hours ago</span>
+    </div>
+</app-card>

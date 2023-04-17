@@ -17,6 +17,20 @@ export class MainContentComponent {
   }
 
   formatPokemonName() {
-    return capitalizeText(this.pokemon.name) + ' ' + capitalizeText(this.pokemon.types[0].type.name)
+    if(this.pokemon) {
+      return capitalizeText(this.pokemon.name) + ' ' + capitalizeText(this.pokemon.types[0].type.name)
+    }
+  }
+
+  getPokemonFrontImage() {
+    if(this.pokemon) {
+      return this.pokemon.sprites.front_default
+    }
+  }
+
+  getPokemonBackImage() {
+    if(this.pokemon) {
+      return this.pokemon.sprites.back_default
+    }
   }
 }
