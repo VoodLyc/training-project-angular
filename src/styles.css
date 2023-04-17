@@ -18,3 +18,8 @@ body {
     height: 100vh;
     padding: 70px;
 }
+
+img {
+    pointer-events: none;
+    user-select: none;
+}

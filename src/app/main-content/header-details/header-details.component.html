@@ -1,0 +1,15 @@
+<div class="pokemon-details">
+    <div class="pokemon-details__specie-info">
+        <span class="pokemon-name">{{ formatPokemonName() }}</span>
+        <span class="pokemon-type">{{ formatPokemonType() }}</span>
+        <span class="pokemon-ability">{{ formatPokemonAbility() }}</span>
+    </div>
+    <div class="pokemon-details__attributes-info">
+        <div class="stars">
+            <i class='bx bxs-star'></i>
+            <span>{{ pokemon.height }}</span>
+        </div>
+        <button class="shaded-button save-item_button">Save Item</button>
+        <span>{{ formatReviews() }}</span>
+    </div>
+</div>
