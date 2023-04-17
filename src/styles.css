@@ -13,3 +13,8 @@
 html {
     background: #dce0ed;
 }
+
+body {
+    height: 100vh;
+    padding: 70px;
+}

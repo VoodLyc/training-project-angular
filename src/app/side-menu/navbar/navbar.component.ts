@@ -11,4 +11,17 @@ export class NavbarComponent {
   new NavbarItem('SAVED ITEMS', 'bx bx-bookmark-minus'), new NavbarItem('NOTIFICATIONS', 'bx bx-bell'), new NavbarItem('SETTINGS', 'bx bx-cog'),
   new NavbarItem('HELP', 'bx bx-help-circle')]
   @Input() isCollapsed: boolean
+  selectedItem: NavbarItem = this.navbarItems[1]
+
+  isSelected(item: NavbarItem): boolean {
+    let selected = false
+    if(item.label === this.selectedItem.label) {
+      selected = true
+    }
+    return selected
+  }
+
+  updateSelectedItem(item: NavbarItem) {
+    this.selectedItem = item
+  }
 }

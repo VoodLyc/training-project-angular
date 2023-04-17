@@ -1,14 +1,5 @@
-<head>
-    <title>Coopang</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
-        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
-    <div class="app-container">
-        <app-side-menu></app-side-menu>
-        <app-main-content style="flex-grow: 2;"></app-main-content>
-        <app-side-list></app-side-list>
-    </div>
-</body>
+<div class="app-container">
+    <app-side-menu></app-side-menu>
+    <app-main-content style="flex-grow: 2;" (sideMenuCollapsed)="collapseSideMenu()"></app-main-content>
+    <app-side-list></app-side-list>
+</div>

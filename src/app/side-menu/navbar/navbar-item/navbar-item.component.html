@@ -1,4 +1,4 @@
-<a class="navbar-item" [ngClass]="{'navbar-item--collapsed': isCollapsed}">
+<a class="navbar-item" [ngClass]="{'navbar-item--collapsed': isCollapsed, 'navbar-item--selected': selected}" (click)="onSelectItem()">
     <i class='navbar-item__icon' [class]="item.icon"></i>
     <span class="navbar-item__label">{{ item.label }}</span>
 </a>

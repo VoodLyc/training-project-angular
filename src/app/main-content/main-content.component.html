@@ -1,6 +1,6 @@
 <div class="main-content">
     <div class="main-content__header">
-        <button (click)="onClick()" class="arrow">
-            <i class='bx bx-chevron-left'></i>
+        <button (click)="collapseSideMenu()" class="arrow">
+            <i class='bx bx-chevron-left' [ngClass]="{'arrow--right': flipArrow}"></i>
         </button>
     </div>

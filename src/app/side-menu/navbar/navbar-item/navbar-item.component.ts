@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NavbarItem } from './navbar-item.model';
 
 @Component({
@@ -9,8 +9,10 @@ import { NavbarItem } from './navbar-item.model';
 export class NavbarItemComponent {
   @Input() item: NavbarItem
   @Input() isCollapsed: boolean
+  @Input() selected: boolean
+  @Output() itemSelected = new EventEmitter<NavbarItem>()
 
-  onClick() {
-    //TODO
+  onSelectItem() {
+    this.itemSelected.emit(this.item)
   }
 }

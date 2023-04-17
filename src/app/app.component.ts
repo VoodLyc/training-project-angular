@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { SideMenuComponent } from './side-menu/side-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'training-project-angular';
+  title = 'Coopang';
+  @ViewChild(SideMenuComponent, { static: true }) child: SideMenuComponent
+
+  collapseSideMenu() {
+    this.child.collapse()
+  }
 }
