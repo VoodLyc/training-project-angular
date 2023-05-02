@@ -26,3 +26,8 @@ export const capitalizeText = (text) => {
     // Checks if the value contains only letters or symbols
     return /^[a-zA-Z!@#\$%\^\&*\)\(+=._-]+$/g.test(value)
   }
+
+  export const generateArrayRange = (start, end) => {
+    // Creates an array of numbers from min to max
+    return Array.from(Array(end - start + 1).keys()).map(x => x + start)
+  }

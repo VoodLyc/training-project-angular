@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { capitalizeText } from 'src/app/util';
-import { getPokemon } from 'src/app/pokemonService';
+import { PokemonImpl } from 'src/app/shared/models/pokemon.model';
+import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
 @Component({
   selector: 'app-preview-card',
@@ -9,31 +9,17 @@ import { getPokemon } from 'src/app/pokemonService';
 })
 export class PreviewCardComponent implements OnInit {
   @Input() pokemonId
-  pokemon
+  pokemon: PokemonImpl
   
-  ngOnInit(): void {
-    this.fetchPokemon(this.pokemonId)
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit() {
+    this.pokemonService.getPreviewPokemon(this.pokemonId).subscribe(
+      (pokemon: PokemonImpl) => this.pokemon = pokemon
+    )
   }
 
-  fetchPokemon(pokemonId) {
-    getPokemon(pokemonId)
-      .then((pokemonData) => {
-        this.pokemon = pokemonData
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }
-
-  getPokemonImg() {
-    if(this.pokemon) {
-      return this.pokemon.sprites.front_default
-    }
-  }
-
-  formatPokemonName() {
-    if(this.pokemon) {
-      return capitalizeText(this.pokemon.name)
-    }
+  onPokemonSelected() {
+    this.pokemonService.pokemonChanged.emit(this.pokemonId)
   }
 }

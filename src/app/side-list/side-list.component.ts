@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { PokemonService } from '../shared/services/pokemon.service';
 
 @Component({
   selector: 'app-side-list',
   templateUrl: './side-list.component.html',
   styleUrls: ['./side-list.component.css']
 })
-export class SideListComponent {
-  @Input() pokemon
-  @Input() previewPokemonIndices: Number[]
-  @Output() previewPokemon = new EventEmitter<{ index: number }>()
+export class SideListComponent implements OnInit {
+  previewPokemonIndices: Number[]
 
-  onClickPreviewPokemon(index) {
-    this.previewPokemon.emit({ index: index })
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit() {
+    this.previewPokemonIndices = this.pokemonService.getPreviewPokemonIdexes()
   }
 }

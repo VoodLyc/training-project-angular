@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { capitalizeText } from '../util';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { PokemonService } from '../shared/services/pokemon.service';
 
 @Component({
   selector: 'app-main-content',
@@ -9,28 +9,9 @@ import { capitalizeText } from '../util';
 export class MainContentComponent {
   @Output() sideMenuCollapsed = new EventEmitter()
   flipArrow: boolean
-  @Input() pokemon
-  
+
   collapseSideMenu() {
     this.sideMenuCollapsed.emit()
     this.flipArrow = !this.flipArrow
-  }
-
-  formatPokemonName() {
-    if(this.pokemon) {
-      return capitalizeText(this.pokemon.name) + ' ' + capitalizeText(this.pokemon.types[0].type.name)
-    }
-  }
-
-  getPokemonFrontImage() {
-    if(this.pokemon) {
-      return this.pokemon.sprites.front_default
-    }
-  }
-
-  getPokemonBackImage() {
-    if(this.pokemon) {
-      return this.pokemon.sprites.back_default
-    }
   }
 }

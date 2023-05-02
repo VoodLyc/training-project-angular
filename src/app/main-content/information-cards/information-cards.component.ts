@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { PokemonImpl } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
 @Component({
-  selector: 'app-header-details',
-  templateUrl: './header-details.component.html',
-  styleUrls: ['./header-details.component.css']
+  selector: 'app-information-cards',
+  templateUrl: './information-cards.component.html',
+  styleUrls: ['./information-cards.component.css']
 })
-export class HeaderDetailsComponent implements OnInit{
+export class InformationCardsComponent {
+
   pokemon: PokemonImpl
 
   constructor(private pokemonService: PokemonService) {}
@@ -17,6 +18,4 @@ export class HeaderDetailsComponent implements OnInit{
       (pokemon) => this.pokemon = pokemon
     )
   }
-
-
 }
