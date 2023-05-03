@@ -1,13 +1,13 @@
 <div class="cards-container">
     <app-card [height]="'150px'" [width]="'400px'">
-        <div class="name-card__content">
+        <div *ngIf="pokemon" class="name-card__content">
             <img [src]="pokemon.frontImage" alt="front image of the pokemon">
             <span *ngIf="pokemon">{{ pokemon.getFullName() }}</span>
             <i class="fa-sharp fa-solid fa-circle-play"></i>
         </div>
     </app-card>
     <app-card [height]="'200px'" [width]="'400px'" class="attributes-card">
-        <div class="attributes-card__content">
+        <div *ngIf="pokemon" class="attributes-card__content">
             <div class="attributes-card__header">
                 <span class="card-header-title">INFORMATIONS</span>
                 <i class="fa-solid fa-ellipsis-vertical dot-icon"></i>
@@ -38,7 +38,7 @@
         </div>
     </app-card>
     <app-card [height]="'370px'" [width]="'200px'" class="auction-card">
-        <div class="auction-card-content">
+        <div *ngIf="pokemon" class="auction-card-content">
             <div class="auction-card__header">
                 <div class="title-container">
                     <span class="card-header-title">AUCTION</span>

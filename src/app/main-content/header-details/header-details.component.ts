@@ -14,7 +14,7 @@ export class HeaderDetailsComponent implements OnInit{
 
   ngOnInit() {
     this.pokemonService.getPokemon().subscribe(
-      (pokemon) => this.pokemon = pokemon
+      (pokemon: PokemonImpl) => this.pokemon = pokemon
     )
   }
 

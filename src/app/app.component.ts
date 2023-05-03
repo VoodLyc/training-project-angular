@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
       .subscribe(
         (pokemonId: number) => {
           this.pokemonService.fetchPokemon(pokemonId)
-          console.log(pokemonId)
         }
       )
   }

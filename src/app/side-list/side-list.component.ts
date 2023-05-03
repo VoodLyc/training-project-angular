@@ -7,11 +7,14 @@ import { PokemonService } from '../shared/services/pokemon.service';
   styleUrls: ['./side-list.component.css']
 })
 export class SideListComponent implements OnInit {
-  previewPokemonIndices: Number[]
+  previewPokemonIndices: number[]
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(private pokemonService: PokemonService) { }
 
   ngOnInit() {
-    this.previewPokemonIndices = this.pokemonService.getPreviewPokemonIdexes()
+    this.pokemonService.getPreviewPokemonIdexes()
+      .subscribe(
+        (pokemonIndexes: number[]) => this.previewPokemonIndices = pokemonIndexes
+      )
   }
 }

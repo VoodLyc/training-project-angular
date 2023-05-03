@@ -1,4 +1,4 @@
-<div class="pokemon-details">
+<div *ngIf="pokemon" class="pokemon-details">
     <div class="pokemon-details__specie-info">
         <span class="pokemon-name">{{ pokemon.getCapitalizedName() }}</span>
         <span class="pokemon-type">{{ pokemon.getUpperCaseType() }}</span>

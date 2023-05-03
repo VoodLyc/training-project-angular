@@ -1,5 +1,5 @@
 <app-card [height]="'200px'" [width]="'200px'">
-    <div class="pokemon-preview-card">
+    <div *ngIf="pokemon" class="pokemon-preview-card">
         <div class="pokemon-preview-card__img-container" (click)="onPokemonSelected()">
             <img [src]="pokemon.frontImage">
         </div>
