@@ -1,5 +1,12 @@
 <div class="app-container">
     <app-side-menu></app-side-menu>
-    <app-main-content style="flex-grow: 2;" (sideMenuCollapsed)="collapseSideMenu()"></app-main-content>
+    <div class="main-content-container">
+        <div class="main-content__header">
+            <button (click)="collapseSideMenu()" class="arrow">
+                <i class='bx bx-chevron-left' [ngClass]="{'arrow--right': isCollapsed}"></i>
+            </button>
+        </div>
+        <router-outlet></router-outlet>
+    </div>
     <app-side-list></app-side-list>
 </div>

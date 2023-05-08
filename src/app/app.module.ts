@@ -14,6 +14,10 @@ import { HeaderDetailsComponent } from './main-content/header-details/header-det
 import { PreviewCardComponent } from './side-list/preview-card/preview-card.component';
 import { PokemonService } from './shared/services/pokemon.service';
 import { InformationCardsComponent } from './main-content/information-cards/information-cards.component';
+import { ComparePokemonComponent } from './compare-pokemon/compare-pokemon.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { AppRoutingModule } from './app-routing.module';
+import { SideMenuService } from './shared/services/side-menu.service';
 
 @NgModule({
   declarations: [
@@ -27,13 +31,16 @@ import { InformationCardsComponent } from './main-content/information-cards/info
     CardComponent,
     HeaderDetailsComponent,
     PreviewCardComponent,
-    InformationCardsComponent
+    InformationCardsComponent,
+    ComparePokemonComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
-  providers: [PokemonService],
+  providers: [PokemonService, SideMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

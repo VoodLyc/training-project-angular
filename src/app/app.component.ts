@@ -1,7 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { SideMenuComponent } from './side-menu/side-menu.component';
+import { Component, OnInit } from '@angular/core';
 import { PokemonImpl } from './shared/models/pokemon.model';
 import { PokemonService } from './shared/services/pokemon.service';
+import { SideMenuService } from './shared/services/side-menu.service';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +10,10 @@ import { PokemonService } from './shared/services/pokemon.service';
 })
 export class AppComponent implements OnInit {
   title = 'Coopang';
-  @ViewChild(SideMenuComponent, { static: true }) child: SideMenuComponent
   pokemon: PokemonImpl
+  isCollapsed: boolean
 
-  constructor(private pokemonService: PokemonService) { }
+  constructor(private pokemonService: PokemonService, private sideMenuService: SideMenuService) { }
 
   ngOnInit() {
     this.pokemonService.fetchPokemon(22)
@@ -23,9 +23,14 @@ export class AppComponent implements OnInit {
           this.pokemonService.fetchPokemon(pokemonId)
         }
       )
+    this.sideMenuService.getIsCollapsed().subscribe(
+      (isCollapsed: boolean) => {
+        this.isCollapsed = isCollapsed
+      }
+    )
   }
 
   collapseSideMenu() {
-    this.child.collapse()
+    this.sideMenuService.collapse()
   }
 }

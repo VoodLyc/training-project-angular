@@ -3,7 +3,7 @@
         <div class="pokemon-preview-card__img-container" (click)="onPokemonSelected()">
             <img [src]="pokemon.frontImage">
         </div>
-        <span class="pokemon-name" (click)="onPokemonSelected()">{{ pokemon.name }}</span>
+        <span class="pokemon-name" (click)="onPokemonSelected()">{{ pokemon.getCapitalizedName() }}</span>
         <span>2 hours ago</span>
     </div>
 </app-card>
