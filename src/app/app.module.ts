@@ -18,6 +18,7 @@ import { ComparePokemonComponent } from './compare-pokemon/compare-pokemon.compo
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SideMenuService } from './shared/services/side-menu.service';
+import { CompareComponent } from './compare-pokemon/compare/compare.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { SideMenuService } from './shared/services/side-menu.service';
     PreviewCardComponent,
     InformationCardsComponent,
     ComparePokemonComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    CompareComponent
   ],
   imports: [
     BrowserModule,
