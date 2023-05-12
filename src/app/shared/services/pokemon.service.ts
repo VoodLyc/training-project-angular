@@ -1,10 +1,9 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { PokemonImpl } from '../models/pokemon.model'
+import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Pokemon } from '../models/pokemon.interface';
 
 @Injectable()
 export class PokemonService {
@@ -14,7 +13,7 @@ export class PokemonService {
   readonly MIN_POKEMON_ID = 1
   readonly NUMBER_OF_POKEMONS_UP = 1
   readonly NUMBER_OF_POKEMONS_DOWN = 2
-  private pokemonSubject = new BehaviorSubject<PokemonImpl>(null)
+  private pokemonSubject = new BehaviorSubject<Pokemon>(null)
   private previewPokemonIndexes = new BehaviorSubject<number[]>([])
 
   constructor(private http: HttpClient) { }
@@ -22,20 +21,20 @@ export class PokemonService {
   fetchPokemon(pokemonId: number) {
     this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`).subscribe(
       (pokemon: Pokemon) => {
-        this.pokemonSubject.next(new PokemonImpl(pokemon))
+        this.pokemonSubject.next(new Pokemon(pokemon))
       }
     )
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
-  getPreviewPokemon(pokemonId: number): Observable<PokemonImpl> {
+  getPreviewPokemon(pokemonId: number): Observable<Pokemon> {
     return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`)
       .pipe(
-        map((pokemon: Pokemon) => new PokemonImpl(pokemon))
+        map((pokemon: Pokemon) => new Pokemon(pokemon))
       )
   }
 
-  getPokemon(): Observable<PokemonImpl> {
+  getPokemon(): Observable<Pokemon> {
     return this.pokemonSubject.asObservable()
   }
 

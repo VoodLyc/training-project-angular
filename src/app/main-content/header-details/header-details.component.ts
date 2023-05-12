@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonImpl } from 'src/app/shared/models/pokemon.model';
+import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
 @Component({
@@ -8,13 +8,13 @@ import { PokemonService } from 'src/app/shared/services/pokemon.service';
   styleUrls: ['./header-details.component.css']
 })
 export class HeaderDetailsComponent implements OnInit{
-  pokemon: PokemonImpl
+  pokemon: Pokemon
 
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit() {
     this.pokemonService.getPokemon().subscribe(
-      (pokemon: PokemonImpl) => this.pokemon = pokemon
+      (pokemon: Pokemon) => this.pokemon = pokemon
     )
   }
 

@@ -1,7 +1,6 @@
 import { capitalizeText } from 'src/app/util';
-import { Pokemon } from './pokemon.interface';
 
-export class PokemonImpl implements Pokemon {
+export class Pokemon {
     public name: string
     public type: string
     public height: number

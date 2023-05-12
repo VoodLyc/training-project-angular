@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PokemonImpl } from './shared/models/pokemon.model';
+import { Pokemon } from './shared/models/pokemon.model';
 import { PokemonService } from './shared/services/pokemon.service';
 import { SideMenuService } from './shared/services/side-menu.service';
 
@@ -10,7 +10,7 @@ import { SideMenuService } from './shared/services/side-menu.service';
 })
 export class AppComponent implements OnInit {
   title = 'Coopang';
-  pokemon: PokemonImpl
+  pokemon: Pokemon
   isCollapsed: boolean
 
   constructor(private pokemonService: PokemonService, private sideMenuService: SideMenuService) { }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Pokemon } from 'src/app/shared/models/pokemon.model';
 
 @Component({
   selector: 'app-compare',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./compare.component.css']
 })
 export class CompareComponent {
-
+  pokemons: Pokemon[]
 }
