@@ -1,4 +1,3 @@
 <div class="container">
-    <app-compare></app-compare>
-    <app-compare></app-compare>
+    <app-compare *ngFor="let id of pokemonIds" [pokemonId]="id" (onPokemonChanged)="onPokemonChanged($event)"></app-compare>
 </div>

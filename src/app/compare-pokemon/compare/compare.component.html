@@ -1,9 +1,34 @@
 <div class="container">
-    <select>
-        <option>Default</option>
-    </select>
-    <img>
-    <app-card [height]="'200px'" [width]="'400px'" class="attributes-card">
-
+    <p-dropdown *ngIf="pokemon" [options]="pokemons" [(ngModel)]="selectedPokemon" optionLabel="name" optionValue="url" [filter]="true"
+        filterBy="name" (onChange)="onChange($event)"></p-dropdown>
+    <img *ngIf="pokemon" [src]="pokemon.frontImage" alt="front image of the pokemon">
+    <app-card [height]="'200px'" [width]="'400px'">
+        <div *ngIf="pokemon" class="information-card__content">
+            <span class="card-header-title">INFORMATION</span>
+            <div class="information-card__attribute-cell">
+                <span class="title">NAME</span>
+                <span class="value">{{ pokemon.getCapitalizedName() }}</span>
+            </div>
+            <div class="information-card__attribute-cell">
+                <span class="title">TYPE</span>
+                <span class="value">{{ pokemon.getCapitalizedType() }}</span>
+            </div>
+            <div class="information-card__attribute-cell">
+                <span class="title">HEIGHT</span>
+                <span class="value">{{ pokemon.height }} dm</span>
+            </div>
+            <div class="information-card__attribute-cell">
+                <span class="title">WEIGHT</span>
+                <span class="value">{{ pokemon.weight }} hg</span>
+            </div>
+            <div class="information-card__attribute-cell">
+                <span class="title">ABILITY</span>
+                <span class="value">{{ pokemon.getCapitalizedAbility() }}</span>
+            </div>
+            <div class="information-card__attribute-cell">
+                <span class="title">BASE EXPERIENCE</span>
+                <span class="value">{{ pokemon.baseExperience }} xp</span>
+            </div>
+        </div>
     </app-card>
 </div>

@@ -5,6 +5,45 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: blue;
-    border: solid 5px white;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    justify-self: center;
+}
+
+.information-card__content {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.card-header-title {
+    width: 100%;
+    grid-column: span 3;
+    padding-left: 20px; 
+    font-size: 12px;
+    font-weight: bold;
+    color: #253262;
+}
+
+.information-card__attribute-cell {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.information-card__attribute-cell .title {
+    font-size: 9px;
+    color: #a0a4bc;
+}
+
+.information-card__attribute-cell .value {
+    font-size: 18px;
+    color: #253262;
 }

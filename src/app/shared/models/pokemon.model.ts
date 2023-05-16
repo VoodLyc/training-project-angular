@@ -48,4 +48,8 @@ export class Pokemon {
     getUpperCaseType(): string {
         return this.type.toUpperCase()
     }
+    
+    getCapitalizedType(): string {
+        return capitalizeText(this.type)
+    }
 }
