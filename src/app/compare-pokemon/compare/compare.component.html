@@ -1,6 +1,13 @@
 <div class="container">
-    <p-dropdown *ngIf="pokemon" [options]="pokemons" [(ngModel)]="selectedPokemon" optionLabel="name" optionValue="url" [filter]="true"
-        filterBy="name" (onChange)="onChange($event)"></p-dropdown>
+    <p-dropdown *ngIf="pokemon" [options]="pokemons" [(ngModel)]="selectedPokemon" optionLabel="name" [filter]="true"
+        filterBy="name" (onChange)="onChange($event)">
+        <ng-template pTemplate="selectedItem">
+            <span *ngIf="selectedPokemon">{{ getCapitalizedName(selectedPokemon.name) }}</span>
+        </ng-template>
+        <ng-template let-pokemon pTemplate="item">
+            <span *ngIf="pokemon">{{ getCapitalizedName(pokemon.name) }}</span>
+        </ng-template>
+    </p-dropdown>
     <img *ngIf="pokemon" [src]="pokemon.frontImage" alt="front image of the pokemon">
     <app-card [height]="'200px'" [width]="'400px'">
         <div *ngIf="pokemon" class="information-card__content">

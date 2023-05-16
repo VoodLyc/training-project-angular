@@ -26,7 +26,7 @@ img {
 .card-header-title {
     width: 100%;
     grid-column: span 3;
-    padding-left: 20px; 
+    padding-left: 30px; 
     font-size: 12px;
     font-weight: bold;
     color: #253262;
@@ -44,6 +44,7 @@ img {
 }
 
 .information-card__attribute-cell .value {
-    font-size: 18px;
+    font-size: 14px;
     color: #253262;
+
 }
