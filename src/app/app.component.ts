@@ -16,13 +16,7 @@ export class AppComponent implements OnInit {
   constructor(private pokemonService: PokemonService, private sideMenuService: SideMenuService) { }
 
   ngOnInit() {
-    this.pokemonService.fetchPokemon(22)
-    this.pokemonService.pokemonChanged
-      .subscribe(
-        (pokemonId: number) => {
-          this.pokemonService.fetchPokemon(pokemonId)
-        }
-      )
+    this.pokemonService.fetchSelectedPokemon(22)
     this.sideMenuService.getIsCollapsed().subscribe(
       (isCollapsed: boolean) => {
         this.isCollapsed = isCollapsed

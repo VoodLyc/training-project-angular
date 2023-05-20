@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonPaginationItem } from 'src/app/shared/models/pokemon-pagination-item.model';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
-import { ComparePokemonService } from 'src/app/shared/services/compare-pokemon.service';
+import { PokemonService } from 'src/app/shared/services/pokemon.service';
 import { capitalizeText } from 'src/app/util';
 
 @Component({
@@ -10,35 +11,48 @@ import { capitalizeText } from 'src/app/util';
   styleUrls: ['./compare.component.css']
 })
 export class CompareComponent implements OnInit {
-  @Input() pokemonId: string
-  @Output() onPokemonChanged = new EventEmitter<{ oldId: string, newId: string }>()
+  @Input() pokemonId: number
+  @Input() index: number
   pokemons: PokemonPaginationItem[]
   selectedPokemon: PokemonPaginationItem
   pokemon: Pokemon
 
-  constructor(private compareService: ComparePokemonService) { }
+  constructor(private pokemonService: PokemonService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.compareService.getPokemons()
+    this.pokemonService.getPokemonPagination()
       .subscribe(
         (pokemons: any) => {
           this.pokemons = pokemons.results
         }
       )
-    this.compareService.fetchPokemon(this.pokemonId)
+    this.pokemonService.getPokemon(this.pokemonId)
       .subscribe(
         (pokemon: Pokemon) => {
-          this.selectedPokemon = {name: pokemon.name, url: `https://pokeapi.co/api/v2/pokemon/${this.pokemonId}/`}
           this.pokemon = pokemon
+          this.resetPokemonSelected(pokemon.name)
         }
       )
   }
 
   onChange(event) {
-    this.onPokemonChanged.emit({ oldId: this.pokemonId, newId: this.getId(event.value.url) })
+    const currentParams = { ...this.route.snapshot.params }
+
+    if (this.index === 0) {
+      currentParams['id1'] = this.getIdFromURL(event.value.url)
+    } else {
+      currentParams['id2'] = this.getIdFromURL(event.value.url)
+    }
+
+    this.router.navigate(['/compare', currentParams.id1, currentParams.id2])
+    this.resetPokemonSelected(this.pokemon.name)
   }
 
-  getId(value: string) {
+  resetPokemonSelected(name: string) {
+    this.selectedPokemon = { name: name, url: `https://pokeapi.co/api/v2/pokemon/${this.pokemonId}/` }
+  }
+
+  getIdFromURL(value: string) {
     let id = value.split('/')
     return id[id.length - 2]
   }

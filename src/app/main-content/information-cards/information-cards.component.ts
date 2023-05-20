@@ -14,7 +14,7 @@ export class InformationCardsComponent {
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit() {
-    this.pokemonService.getPokemon().subscribe(
+    this.pokemonService.getSelectedPokemon().subscribe(
       (pokemon: Pokemon) => this.pokemon = pokemon
     )
   }

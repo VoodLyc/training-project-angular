@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class PokemonService {
-  pokemonChanged = new EventEmitter<number>()
   readonly BASE_URL = 'https://pokeapi.co/api/v2'
   readonly MAX_POKEMON_ID = 1008
   readonly MIN_POKEMON_ID = 1
@@ -15,10 +14,11 @@ export class PokemonService {
   readonly NUMBER_OF_POKEMONS_DOWN = 2
   private pokemonSubject = new BehaviorSubject<Pokemon>(null)
   private previewPokemonIndexes = new BehaviorSubject<number[]>([])
+  private pokemonPagination: Observable<any>
 
   constructor(private http: HttpClient) { }
 
-  fetchPokemon(pokemonId: number) {
+  fetchSelectedPokemon(pokemonId: number) {
     this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`).subscribe(
       (pokemon: Pokemon) => {
         this.pokemonSubject.next(new Pokemon(pokemon))
@@ -27,14 +27,18 @@ export class PokemonService {
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
-  getPreviewPokemon(pokemonId: number): Observable<Pokemon> {
+  fetchPokemonPagination() {
+    this.pokemonPagination = this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
+  }
+
+  getPokemon(pokemonId: number): Observable<Pokemon> {
     return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`)
       .pipe(
         map((pokemon: Pokemon) => new Pokemon(pokemon))
       )
   }
 
-  getPokemon(): Observable<Pokemon> {
+  getSelectedPokemon(): Observable<Pokemon> {
     return this.pokemonSubject.asObservable()
   }
 
@@ -42,7 +46,11 @@ export class PokemonService {
     return this.previewPokemonIndexes.asObservable()
   }
 
-  generatePokemonIndexRange(pokemonId) {
+  getPokemonPagination(): Observable<any> {
+    return this.pokemonPagination
+  }
+
+  generatePokemonIndexRange(pokemonId: number) {
     let min = pokemonId - this.NUMBER_OF_POKEMONS_DOWN
     let max = pokemonId + this.NUMBER_OF_POKEMONS_UP
 
@@ -58,7 +66,7 @@ export class PokemonService {
     return { min, max }
   }
 
-  generatePokemonIndexesList(pokemonId): number[] {
+  generatePokemonIndexesList(pokemonId: number): number[] {
     let limit = this.generatePokemonIndexRange(pokemonId)
     let pokemonIndexArray = generateArrayRange(limit.min, limit.max)
     let index = pokemonIndexArray.indexOf(pokemonId)

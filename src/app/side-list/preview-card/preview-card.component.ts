@@ -8,18 +8,18 @@ import { PokemonService } from 'src/app/shared/services/pokemon.service';
   styleUrls: ['./preview-card.component.css']
 })
 export class PreviewCardComponent implements OnInit {
-  @Input() pokemonId
+  @Input() pokemonId: number
   pokemon: Pokemon
   
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit() {
-    this.pokemonService.getPreviewPokemon(this.pokemonId).subscribe(
+    this.pokemonService.getPokemon(this.pokemonId).subscribe(
       (pokemon: Pokemon) => this.pokemon = pokemon
     )
   }
 
   onPokemonSelected() {
-    this.pokemonService.pokemonChanged.emit(this.pokemonId)
+    this.pokemonService.fetchSelectedPokemon(this.pokemonId)
   }
 }
