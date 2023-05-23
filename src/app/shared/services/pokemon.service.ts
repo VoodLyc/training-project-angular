@@ -38,6 +38,15 @@ export class PokemonService {
       )
   }
 
+  getIdFromURL(value: string) {
+    let id = value.split('/')
+    return id[id.length - 2]
+  }
+
+  getPokemonURL(pokemonId: number): string {
+    return `${this.BASE_URL}/pokemon/${pokemonId}/`
+  }
+
   getSelectedPokemon(): Observable<Pokemon> {
     return this.pokemonSubject.asObservable()
   }

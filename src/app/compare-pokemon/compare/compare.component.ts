@@ -30,7 +30,7 @@ export class CompareComponent implements OnInit {
       .subscribe(
         (pokemon: Pokemon) => {
           this.pokemon = pokemon
-          this.resetPokemonSelected(pokemon.name)
+          this.resetSelectedPokemon(pokemon.name)
         }
       )
   }
@@ -39,22 +39,17 @@ export class CompareComponent implements OnInit {
     const currentParams = { ...this.route.snapshot.params }
 
     if (this.index === 0) {
-      currentParams['id1'] = this.getIdFromURL(event.value.url)
+      currentParams['id1'] = this.pokemonService.getIdFromURL(event.value.url)
     } else {
-      currentParams['id2'] = this.getIdFromURL(event.value.url)
+      currentParams['id2'] = this.pokemonService.getIdFromURL(event.value.url)
     }
 
     this.router.navigate(['/compare', currentParams.id1, currentParams.id2])
-    this.resetPokemonSelected(this.pokemon.name)
+    this.resetSelectedPokemon(this.pokemon.name)
   }
 
-  resetPokemonSelected(name: string) {
-    this.selectedPokemon = { name: name, url: `https://pokeapi.co/api/v2/pokemon/${this.pokemonId}/` }
-  }
-
-  getIdFromURL(value: string) {
-    let id = value.split('/')
-    return id[id.length - 2]
+  resetSelectedPokemon(name: string) {
+    this.selectedPokemon = { name: name, url: this.pokemonService.getPokemonURL(this.pokemonId) }
   }
 
   getCapitalizedName(name: string) {

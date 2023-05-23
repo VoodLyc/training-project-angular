@@ -4,7 +4,9 @@
     </div>
     <hr>
     <div class="navbar">
-        <app-navbar></app-navbar>
+        <div class="navbar-items-container">
+            <app-navbar-item *ngFor="let item of navbarItems" [item]="item" [selected]="isSelected(item)" [routerLink]="item.url"></app-navbar-item>
+        </div>
     </div>
     <hr>
     <app-user-details [user]="{ userName: 'Zaki Deanra', title:'Cupang Collectors', imageUrl: 'https://images.generated.photos/3MPyvhym-oYQPHqv4u9VSC5s-LGb03Ay7PhKOikovOs/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NjI3ODU4LmpwZw.jpg' }"></app-user-details>

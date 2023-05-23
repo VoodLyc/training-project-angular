@@ -1,6 +1,7 @@
 import { capitalizeText } from 'src/app/util';
 
 export class Pokemon {
+    public id: number
     public name: string
     public type: string
     public height: number
@@ -11,6 +12,7 @@ export class Pokemon {
     public backImage: string
 
     constructor(pokemon: any) {
+        this.id = pokemon.id
         this.name = pokemon.name
         this.type = pokemon.types[0].type.name
         this.height = pokemon.height
