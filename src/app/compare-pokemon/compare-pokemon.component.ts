@@ -14,10 +14,11 @@ export class ComparePokemonComponent implements OnInit {
 
   ngOnInit() {
     this.pokemonService.fetchPokemonPagination()
-    this.route.params
+    this.route.paramMap
       .subscribe(
         (params: Params) => {
-          this.pokemonIds = [params['id1'], params['id2']]
+          this.pokemonIds = [params.get('id1'), params.get('id2')]
+          console.log(params)
         }
       )
   }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
@@ -11,7 +12,7 @@ export class PreviewCardComponent implements OnInit {
   @Input() pokemonId: number
   pokemon: Pokemon
   
-  constructor(private pokemonService: PokemonService) {}
+  constructor(private pokemonService: PokemonService, private router: Router) {}
 
   ngOnInit() {
     this.pokemonService.getPokemon(this.pokemonId).subscribe(
@@ -20,6 +21,6 @@ export class PreviewCardComponent implements OnInit {
   }
 
   onPokemonSelected() {
-    this.pokemonService.fetchSelectedPokemon(this.pokemonId)
+    this.router.navigate(['/pokemon', this.pokemonId])
   }
 }

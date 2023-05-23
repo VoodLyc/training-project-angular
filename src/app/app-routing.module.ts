@@ -5,7 +5,7 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { ComparePokemonComponent } from './compare-pokemon/compare-pokemon.component';
 
 const appRoutes: Routes = [
-    { path: '', component: MainContentComponent },
+    { path: '', redirectTo:'pokemon/25', pathMatch: 'full' },
     { path: 'pokemon/:id', component: MainContentComponent },
     { path: 'compare/:id1/:id2', component: ComparePokemonComponent },
     { path: 'not-found', component: ErrorPageComponent, data: { message: 'Page not found!' } },

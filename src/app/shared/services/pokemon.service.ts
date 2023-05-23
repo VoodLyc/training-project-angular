@@ -16,29 +16,31 @@ export class PokemonService {
   private previewPokemonIndexes = new BehaviorSubject<number[]>([])
   private pokemonPagination: Observable<any>
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.fetchSelectedPokemon(25)
+  }
 
-  fetchSelectedPokemon(pokemonId: number) {
-    this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`).subscribe(
+  fetchSelectedPokemon(pokemonId: number): void {
+    this.getPokemon(pokemonId).subscribe(
       (pokemon: Pokemon) => {
-        this.pokemonSubject.next(new Pokemon(pokemon))
+        this.pokemonSubject.next(pokemon)
       }
     )
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
-  fetchPokemonPagination() {
+  fetchPokemonPagination(): void {
     this.pokemonPagination = this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
-    return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}`)
+    return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
       .pipe(
         map((pokemon: Pokemon) => new Pokemon(pokemon))
       )
   }
 
-  getIdFromURL(value: string) {
+  getIdFromURL(value: string): string {
     let id = value.split('/')
     return id[id.length - 2]
   }
