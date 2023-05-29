@@ -1,6 +1,6 @@
 <div class="container">
     <p-dropdown *ngIf="pokemon" [options]="pokemons" [(ngModel)]="selectedPokemon" optionLabel="name" [filter]="true"
-        filterBy="name" (onChange)="onChange($event)">
+        filterBy="name" (onChange)="onChangePokemon($event)">
         <ng-template pTemplate="selectedItem">
             <span *ngIf="selectedPokemon && pokemon">{{ getCapitalizedName(selectedPokemon.name) }}</span>
         </ng-template>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PokemonService } from '../shared/services/pokemon.service';
 
@@ -7,7 +7,7 @@ import { PokemonService } from '../shared/services/pokemon.service';
   templateUrl: './compare-pokemon.component.html',
   styleUrls: ['./compare-pokemon.component.css']
 })
-export class ComparePokemonComponent implements OnInit {
+export class ComparePokemonComponent implements OnInit, OnDestroy {
   pokemonIds: string[]
 
   constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
@@ -18,8 +18,11 @@ export class ComparePokemonComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           this.pokemonIds = [params.get('id1'), params.get('id2')]
-          console.log(params)
         }
       )
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destoy')
   }
 }

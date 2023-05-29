@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonPaginationItem } from 'src/app/shared/models/pokemon-pagination-item.model';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
@@ -10,7 +10,7 @@ import { capitalizeText } from 'src/app/util';
   templateUrl: './compare.component.html',
   styleUrls: ['./compare.component.css']
 })
-export class CompareComponent implements OnInit {
+export class CompareComponent implements OnInit, OnDestroy {
   @Input() pokemonId: number
   @Input() index: number
   pokemons: PokemonPaginationItem[]
@@ -35,7 +35,7 @@ export class CompareComponent implements OnInit {
       )
   }
 
-  onChange(event) {
+  onChangePokemon(event) {
     const currentParams = { ...this.route.snapshot.params }
 
     if (this.index === 0) {
@@ -54,5 +54,9 @@ export class CompareComponent implements OnInit {
 
   getCapitalizedName(name: string) {
     return capitalizeText(name)
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destroy child', this.index)
   }
 }

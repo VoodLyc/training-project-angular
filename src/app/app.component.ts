@@ -1,25 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PokemonService } from './shared/services/pokemon.service';
 import { SideMenuService } from './shared/services/side-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { Subscription, filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Coopang';
   previousId: string
   isCollapsed: boolean
+  isCollapsedSubscription: Subscription
+  routeSubscription: Subscription
 
   constructor(private pokemonService: PokemonService, private sideMenuService: SideMenuService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {
-    // this.pokemonService.fetchSelectedPokemon(25)
+  ngOnInit(): void {
     this.previousId = '25'
-    this.router.events
+    this.routeSubscription = this.router.events
       .pipe(
         map(() => this.activatedRoute.firstChild),
         filter((route) => route?.outlet === 'primary')
@@ -31,7 +32,7 @@ export class AppComponent implements OnInit {
           this.pokemonService.fetchSelectedPokemon(Number(id))
         }
       })
-    this.sideMenuService.getIsCollapsed().subscribe(
+    this.isCollapsedSubscription = this.sideMenuService.getIsCollapsed().subscribe(
       (isCollapsed: boolean) => {
         this.isCollapsed = isCollapsed
       }
@@ -40,5 +41,10 @@ export class AppComponent implements OnInit {
 
   collapseSideMenu() {
     this.sideMenuService.collapse()
+  }
+
+  ngOnDestroy(): void {
+    this.isCollapsedSubscription.unsubscribe()
+    this.routeSubscription.unsubscribe()
   }
 }

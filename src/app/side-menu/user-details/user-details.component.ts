@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { User } from './user.model';
 import { SideMenuService } from 'src/app/shared/services/side-menu.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-details',
@@ -9,17 +10,22 @@ import { SideMenuService } from 'src/app/shared/services/side-menu.service';
 })
 
 
-export class UserDetailsComponent implements OnInit {
+export class UserDetailsComponent implements OnInit, OnDestroy {
   @Input() user: User
   isCollapsed: boolean
+  isCollapsedSubscription: Subscription
 
   constructor(private sideMenuService: SideMenuService) { }
 
-  ngOnInit() {
-    this.sideMenuService.getIsCollapsed().subscribe(
+  ngOnInit(): void {
+    this.isCollapsedSubscription = this.sideMenuService.getIsCollapsed().subscribe(
       (isCollapsed: boolean) => {
         this.isCollapsed = isCollapsed
       }
     )
+  }
+
+  ngOnDestroy(): void {
+    this.isCollapsedSubscription.unsubscribe()
   }
 }

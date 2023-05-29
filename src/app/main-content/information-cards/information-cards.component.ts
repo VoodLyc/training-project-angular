@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
@@ -7,15 +8,19 @@ import { PokemonService } from 'src/app/shared/services/pokemon.service';
   templateUrl: './information-cards.component.html',
   styleUrls: ['./information-cards.component.css']
 })
-export class InformationCardsComponent {
-
+export class InformationCardsComponent implements OnInit, OnDestroy {
   pokemon: Pokemon
+  pokemonSubscription: Subscription
 
   constructor(private pokemonService: PokemonService) {}
 
-  ngOnInit() {
-    this.pokemonService.getSelectedPokemon().subscribe(
+  ngOnInit(): void {
+    this.pokemonSubscription = this.pokemonService.getSelectedPokemon().subscribe(
       (pokemon: Pokemon) => this.pokemon = pokemon
     )
+  }
+
+  ngOnDestroy(): void {
+    this.pokemonSubscription.unsubscribe()
   }
 }
