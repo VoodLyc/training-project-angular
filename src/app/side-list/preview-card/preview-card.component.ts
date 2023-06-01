@@ -21,6 +21,6 @@ export class PreviewCardComponent implements OnInit {
   }
 
   onPokemonSelected() {
-    this.router.navigate(['/pokemon', this.pokemonId])
+    this.pokemonService.fetchSelectedPokemon(this.pokemonId)
   }
 }

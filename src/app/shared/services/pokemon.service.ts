@@ -4,6 +4,7 @@ import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 
 @Injectable()
 export class PokemonService {
@@ -14,7 +15,8 @@ export class PokemonService {
   readonly NUMBER_OF_POKEMONS_DOWN = 2
   private pokemonSubject = new BehaviorSubject<Pokemon>(null)
   private previewPokemonIndexes = new BehaviorSubject<number[]>([])
-  private pokemonPagination: Observable<any>
+  private comparePokemonSubjectA = new BehaviorSubject<Pokemon>(null)
+  private comparePokemonSubjectB = new BehaviorSubject<Pokemon>(null)
 
   constructor(private http: HttpClient) {
     this.fetchSelectedPokemon(25)
@@ -29,8 +31,16 @@ export class PokemonService {
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
-  fetchPokemonPagination(): void {
-    this.pokemonPagination = this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
+  fetchComparePokemon(index: number, pokemonId: number): void {
+    this.getPokemon(pokemonId).subscribe(
+      (pokemon: Pokemon) => {
+        this.getComparePokemonSubject(index).next(pokemon)
+      }
+    )
+  }
+
+  getPokemonPagination(): Observable<PokemonPaginationItem> {
+    return this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
@@ -38,6 +48,18 @@ export class PokemonService {
       .pipe(
         map((pokemon: Pokemon) => new Pokemon(pokemon))
       )
+  }
+
+  getComparePokemon(index: number): Observable<Pokemon> {
+    return this.getComparePokemonSubject(index).asObservable()
+  }
+
+  private getComparePokemonSubject(index: number): BehaviorSubject<Pokemon> {
+    if (index === 0) {
+      return this.comparePokemonSubjectA
+    } else {
+      return this.comparePokemonSubjectB
+    }
   }
 
   getIdFromURL(value: string): string {
@@ -55,10 +77,6 @@ export class PokemonService {
 
   getPreviewPokemonIdexes(): Observable<number[]> {
     return this.previewPokemonIndexes.asObservable()
-  }
-
-  getPokemonPagination(): Observable<any> {
-    return this.pokemonPagination
   }
 
   generatePokemonIndexRange(pokemonId: number) {
