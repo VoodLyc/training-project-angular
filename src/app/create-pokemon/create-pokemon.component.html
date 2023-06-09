@@ -1,1 +1,29 @@
-<p>create-pokemon works!</p>
+<div class="container">
+    <form class="form">
+        <div class="form__group">
+            <label for="name" class="form__label">Name</label>
+            <input type="text" id="name" class="form__input">
+        </div>
+        <div class="form__group">
+            <label for="type" class="form__label">Type</label>
+            <p-dropdown id="type" [options]="types" [(ngModel)]="selectedType"></p-dropdown>
+        </div>
+        <div class="form__group">
+            <label for="height" class="form__label">Height (Decimeters)</label>
+            <input type="number" id="height" min="1" max="9999" class="form__input">
+        </div>
+        <div class="form__group">
+            <label for="weight" class="form__label">Weight (Hectograms)</label>
+            <input type="number" id="weight" min="1" max="9999" class="form__input">
+        </div>
+        <div class="form__group">
+            <label for="experience" class="form__label">Base experience</label>
+            <input type="number" id="experience" min="1" max="9999" class="form__input">
+        </div>
+        <div class="form__group multiselect">
+            <label for="ability" class="form__label">Abilities</label>
+            <p-multiSelect [options]="abilities" [(ngModel)]="selectedAbility" optionLabel="name" [selectionLimit]="4"></p-multiSelect>
+        </div>
+        <button type="submit">Create Pokemon</button>
+    </form>
+</div>

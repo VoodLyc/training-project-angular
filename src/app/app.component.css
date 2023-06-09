@@ -40,3 +40,9 @@
     flex-grow: 2;
     background-color: #efefef;
 }
+
+.router-container {
+    height: calc(100% - 100px);
+    width: 100%;
+    overflow: auto;
+}

@@ -6,7 +6,9 @@
                 <i class='bx bx-chevron-left' [ngClass]="{'arrow--right': isCollapsed}"></i>
             </button>
         </div>
-        <router-outlet></router-outlet>
+        <div class="router-container">
+            <router-outlet></router-outlet>
+        </div>
     </div>
     <app-side-list></app-side-list>
 </div>

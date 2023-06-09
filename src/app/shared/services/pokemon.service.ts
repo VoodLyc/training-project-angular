@@ -10,6 +10,7 @@ import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 export class PokemonService {
   readonly BASE_URL = 'https://pokeapi.co/api/v2'
   readonly MAX_POKEMON_ID = 1008
+  readonly MAX_POKEMON_ABILITIES_ID = 298
   readonly MIN_POKEMON_ID = 1
   readonly NUMBER_OF_POKEMONS_UP = 1
   readonly NUMBER_OF_POKEMONS_DOWN = 2
@@ -17,6 +18,7 @@ export class PokemonService {
   private previewPokemonIndexes = new BehaviorSubject<number[]>([])
   private comparePokemonSubjectA = new BehaviorSubject<Pokemon>(null)
   private comparePokemonSubjectB = new BehaviorSubject<Pokemon>(null)
+  private types: string[] = ['Normal', 'Fire', 'Water', 'Grass', 'Flying', 'Fighting', 'Poison', 'Electric', 'Ground', 'Rock', 'Psychic', 'Ice', 'Bug', 'Ghost', 'Steel', 'Dragon', 'Dark', 'Fairy']
 
   constructor(private http: HttpClient) {
     this.fetchSelectedPokemon(25)
@@ -41,6 +43,10 @@ export class PokemonService {
 
   getPokemonPagination(): Observable<PokemonPaginationItem> {
     return this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
+  }
+  
+  getPokemonAbilities(): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/ability/?limit=${this.MAX_POKEMON_ABILITIES_ID}`)
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
@@ -73,6 +79,10 @@ export class PokemonService {
 
   getSelectedPokemon(): Observable<Pokemon> {
     return this.pokemonSubject.asObservable()
+  }
+  
+  getTypes(): string[] {
+    return this.types
   }
 
   getPreviewPokemonIdexes(): Observable<number[]> {

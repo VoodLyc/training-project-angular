@@ -1,6 +1,6 @@
 .container {
     height: 500px;
-    width: 500px;
+    width: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,13 +20,15 @@ img {
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: 50px repeat(2, 1fr);
 }
 
 .card-header-title {
     width: 100%;
     grid-column: span 3;
-    padding-left: 30px; 
+    padding-left: 30px;
+    margin-top: 15px;
+    align-self: center;
     font-size: 12px;
     font-weight: bold;
     color: #253262;
