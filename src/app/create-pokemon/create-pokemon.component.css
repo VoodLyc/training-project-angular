@@ -8,7 +8,7 @@
 .form {
     display: grid;
     grid-template-columns: repeat(2, 230px);
-    grid-template-rows: repeat(5, 100px);
+    grid-template-rows: repeat(10, 90px);
     padding-left: 40px;
 }
 
@@ -20,11 +20,11 @@
 
 .form__input {
     padding: 10px 10px;
+    width: 200px;
     font-size: 15px;
     border: 1px solid rgba(212, 217, 222, 1);
     border-radius: 6px;
     outline: transparent;
-    width: 200px;
     color: #6A686D;
 }
 
@@ -32,6 +32,10 @@
     font-weight: bold;
     font-size: 15px;
     color: #253262;
+}
+
+.form__img {
+    grid-row: span 3;
 }
 
 button {
@@ -46,4 +50,29 @@ button {
     border: none;
     border-radius: 8px;
     background-color: #277dff;
+    margin-top: 10px;
+}
+
+input[type=file]::file-selector-button {
+    width: fit-content;
+    height: fit-content;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #277dff;
+    margin-top: 10px;
+  }
+
+img {
+    width: 200px;
+    height: 200px;
+    justify-self: center;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid rgba(212, 217, 222, 1);
 }

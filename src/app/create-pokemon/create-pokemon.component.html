@@ -6,7 +6,7 @@
         </div>
         <div class="form__group">
             <label for="type" class="form__label">Type</label>
-            <p-dropdown id="type" [options]="types" [(ngModel)]="selectedType"></p-dropdown>
+            <p-dropdown id="type" [options]="types" [(ngModel)]="selectedType" [style]="{'width':'200px'}"></p-dropdown>
         </div>
         <div class="form__group">
             <label for="height" class="form__label">Height (Decimeters)</label>
@@ -22,7 +22,22 @@
         </div>
         <div class="form__group multiselect">
             <label for="ability" class="form__label">Abilities</label>
-            <p-multiSelect [options]="abilities" [(ngModel)]="selectedAbility" optionLabel="name" [selectionLimit]="4"></p-multiSelect>
+            <p-multiSelect [options]="abilities" [(ngModel)]="selectedAbility" optionLabel="name" [filter]="true"
+                filterBy="name" [selectionLimit]="3" [style]="{'min-width':'200px'}">
+            </p-multiSelect>
+        </div>
+        <div class="form__group form__img">
+            <label for="pokemonFrontImage" class="form__label">Front image</label>
+            <img [src]="frontImage" alt="front image of the pokemon">
+            <input type="file" id="pokemonFrontImage" (change)="onSelectFrontImage($event)"
+                accept="image/png, image/jpeg">
+        </div>
+
+        <div class="form__group form__img">
+            <label for="pokemonBackImage" class="form__label">Back image</label>
+            <img [src]="backImage" alt="back image of the pokemon">
+            <input type="file" id="pokemonBackImage" (change)="onSelectBackImage($event)"
+                accept="image/png, image/jpeg">
         </div>
         <button type="submit">Create Pokemon</button>
     </form>

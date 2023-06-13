@@ -11,8 +11,10 @@ import { capitalizeText } from '../util';
 export class CreatePokemonComponent implements OnInit {
   types: string[]
   abilities: PokemonPaginationItem[]
-  selectedType = 'Normal'
+  selectedType: string = 'Normal'
   selectedAbility: PokemonPaginationItem
+  frontImage: string
+  backImage: string
 
   constructor(private pokemonService: PokemonService) { }
 
@@ -29,7 +31,23 @@ export class CreatePokemonComponent implements OnInit {
     console.log(event)
   }
 
-  getCapitalizedName(text: string) {
-    return capitalizeText(text)
+  onSelectFrontImage(event) {
+    if (event.target.files) {
+      var reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (event: any) => {
+        this.frontImage = event.target.result
+      }
+    }
+  }
+
+  onSelectBackImage(event) {
+    if (event.target.files) {
+      var reader = new FileReader()
+      reader.readAsDataURL(event.target.files[0])
+      reader.onload = (event: any) => {
+        this.backImage = event.target.result
+      }
+    }
   }
 }
