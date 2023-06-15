@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, from, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 
 @Injectable()
 export class PokemonService {
   readonly BASE_URL = 'https://pokeapi.co/api/v2'
-  readonly MAX_POKEMON_ID = 1008
+  readonly MAX_POKEMON_ID = 1010
   readonly MAX_POKEMON_ABILITIES_ID = 298
   readonly MIN_POKEMON_ID = 1
   readonly NUMBER_OF_POKEMONS_UP = 1
@@ -19,41 +19,87 @@ export class PokemonService {
   private comparePokemonSubjectA = new BehaviorSubject<Pokemon>(null)
   private comparePokemonSubjectB = new BehaviorSubject<Pokemon>(null)
   private types: string[] = ['Normal', 'Fire', 'Water', 'Grass', 'Flying', 'Fighting', 'Poison', 'Electric', 'Ground', 'Rock', 'Psychic', 'Ice', 'Bug', 'Ghost', 'Steel', 'Dragon', 'Dark', 'Fairy']
+  private localPokemons: Pokemon[] = []
 
   constructor(private http: HttpClient) {
-    this.fetchSelectedPokemon(25)
+    this.loadLocalPokemons()
   }
 
   fetchSelectedPokemon(pokemonId: number): void {
-    this.getPokemon(pokemonId).subscribe(
-      (pokemon: Pokemon) => {
-        this.pokemonSubject.next(pokemon)
-      }
-    )
+    if (!this.isLocalPokemon(pokemonId)) {
+      this.getPokemon(pokemonId).subscribe(
+        (pokemon: Pokemon) => {
+          this.pokemonSubject.next(pokemon)
+        }
+      )
+    }
+    else {
+      console.log('LOCALE')
+      this.pokemonSubject.next(this.getLocalPokemon(pokemonId))
+      console.log('Subject:', this.pokemonSubject.value)
+    }
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
   fetchComparePokemon(index: number, pokemonId: number): void {
-    this.getPokemon(pokemonId).subscribe(
-      (pokemon: Pokemon) => {
-        this.getComparePokemonSubject(index).next(pokemon)
-      }
-    )
+    if (!this.isLocalPokemon(pokemonId)) {
+      this.getPokemon(pokemonId).subscribe(
+        (pokemon: Pokemon) => {
+          this.getComparePokemonSubject(index).next(pokemon)
+        }
+      )
+    }
+    else {
+      this.getComparePokemonSubject(index).next(this.getLocalPokemon(pokemonId))
+    }
+  }
+
+  generatePokemonId(): number {
+    return this.MAX_POKEMON_ID + this.localPokemons.length + 1
+  }
+
+  private isLocalPokemon(pokemonId: number): boolean {
+    return pokemonId > this.MAX_POKEMON_ID
+  }
+
+  private getLocalPokemon(pokemonId: number): Pokemon {
+    const id = pokemonId - (this.MAX_POKEMON_ID + 1)
+    console.log('id:', id)
+    const pokemon = Object.assign(new Pokemon(), this.localPokemons[id])
+    console.log('pokemon:', pokemon)
+    return pokemon
+  }
+
+  private loadLocalPokemons(): void {
+    if (localStorage.getItem('pokemons') == null) {
+      localStorage.setItem('pokemons', '[]')
+    }
+    this.localPokemons = JSON.parse(localStorage.getItem('pokemons'))
+  }
+
+  saveLocalPokemon(pokemon: Pokemon): void {
+    this.localPokemons.push(pokemon)
+    localStorage.setItem('pokemons', JSON.stringify(this.localPokemons))
   }
 
   getPokemonPagination(): Observable<PokemonPaginationItem> {
     return this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
   }
-  
-  getPokemonAbilities(): Observable<any> {
+
+  getPokemonAbilities(): Observable<PokemonPaginationItem> {
     return this.http.get<any>(`${this.BASE_URL}/ability/?limit=${this.MAX_POKEMON_ABILITIES_ID}`)
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
-    return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
+    if(!this.isLocalPokemon(pokemonId)) {
+      return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
       .pipe(
-        map((pokemon: Pokemon) => new Pokemon(pokemon))
+        map((pokemon: Pokemon) => Pokemon.PokemonJSON(pokemon))
       )
+    }
+    else {
+      return of(this.getLocalPokemon(pokemonId))
+    }
   }
 
   getComparePokemon(index: number): Observable<Pokemon> {
@@ -80,7 +126,7 @@ export class PokemonService {
   getSelectedPokemon(): Observable<Pokemon> {
     return this.pokemonSubject.asObservable()
   }
-  
+
   getTypes(): string[] {
     return this.types
   }
@@ -89,7 +135,7 @@ export class PokemonService {
     return this.previewPokemonIndexes.asObservable()
   }
 
-  generatePokemonIndexRange(pokemonId: number) {
+  private generatePokemonIndexRange(pokemonId: number) {
     let min = pokemonId - this.NUMBER_OF_POKEMONS_DOWN
     let max = pokemonId + this.NUMBER_OF_POKEMONS_UP
 
@@ -97,7 +143,7 @@ export class PokemonService {
       min = this.MIN_POKEMON_ID
       max += this.NUMBER_OF_POKEMONS_DOWN - Math.abs(pokemonId - this.MIN_POKEMON_ID)
     }
-    else if (max > this.MAX_POKEMON_ID) {
+    else if (max > this.MAX_POKEMON_ID + this.localPokemons.length) {
       max = this.MAX_POKEMON_ID
       min -= this.NUMBER_OF_POKEMONS_UP + Math.abs(pokemonId - this.MAX_POKEMON_ID)
     }
@@ -105,7 +151,7 @@ export class PokemonService {
     return { min, max }
   }
 
-  generatePokemonIndexesList(pokemonId: number): number[] {
+  private generatePokemonIndexesList(pokemonId: number): number[] {
     let limit = this.generatePokemonIndexRange(pokemonId)
     let pokemonIndexArray = generateArrayRange(limit.min, limit.max)
     let index = pokemonIndexArray.indexOf(pokemonId)

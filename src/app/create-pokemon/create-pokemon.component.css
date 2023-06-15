@@ -53,6 +53,10 @@ button {
     margin-top: 10px;
 }
 
+button:disabled {
+    background-color: #79a9f2;
+}
+
 input[type=file]::file-selector-button {
     width: fit-content;
     height: fit-content;
@@ -75,4 +79,8 @@ img {
     overflow: hidden;
     border-radius: 6px;
     border: 1px solid rgba(212, 217, 222, 1);
+}
+
+input.ng-invalid.ng-touched {
+    border: 1px solid red;
 }

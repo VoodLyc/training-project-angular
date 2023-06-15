@@ -11,7 +11,6 @@ import { Subscription, filter, map } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Coopang';
-  previousId: string
   isCollapsed: boolean
   isCollapsedSubscription: Subscription
   routeSubscription: Subscription
@@ -19,7 +18,6 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private pokemonService: PokemonService, private sideMenuService: SideMenuService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.previousId = '25'
     this.routeSubscription = this.router.events
       .pipe(
         map(() => this.activatedRoute.firstChild),
@@ -27,8 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((route) => {
         const id = route?.snapshot.paramMap.get('id');
-        if (id && id !== this.previousId) {
-          this.previousId = id
+        if (id) {
           this.pokemonService.fetchSelectedPokemon(Number(id))
         }
       })
