@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
-import { Observable, BehaviorSubject, from, of } from 'rxjs';
+import { Observable, BehaviorSubject, from, of, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 
@@ -23,6 +23,11 @@ export class PokemonService {
 
   constructor(private http: HttpClient) {
     this.loadLocalPokemons()
+    setTimeout(() => {
+      if(!this.pokemonSubject.value || Object.keys(this.pokemonSubject.value).length === 0) {
+        this.fetchSelectedPokemon(25)
+      }
+    }, 300)
   }
 
   fetchSelectedPokemon(pokemonId: number): void {
@@ -34,9 +39,7 @@ export class PokemonService {
       )
     }
     else {
-      console.log('LOCALE')
       this.pokemonSubject.next(this.getLocalPokemon(pokemonId))
-      console.log('Subject:', this.pokemonSubject.value)
     }
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
@@ -64,9 +67,7 @@ export class PokemonService {
 
   private getLocalPokemon(pokemonId: number): Pokemon {
     const id = pokemonId - (this.MAX_POKEMON_ID + 1)
-    console.log('id:', id)
     const pokemon = Object.assign(new Pokemon(), this.localPokemons[id])
-    console.log('pokemon:', pokemon)
     return pokemon
   }
 
@@ -76,14 +77,34 @@ export class PokemonService {
     }
     this.localPokemons = JSON.parse(localStorage.getItem('pokemons'))
   }
+  
+  private getLocalPokemons(): Pokemon[] {
+    return this.localPokemons
+  }
 
   saveLocalPokemon(pokemon: Pokemon): void {
     this.localPokemons.push(pokemon)
     localStorage.setItem('pokemons', JSON.stringify(this.localPokemons))
   }
 
-  getPokemonPagination(): Observable<PokemonPaginationItem> {
-    return this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
+  getPokemonPagination(): Observable<PokemonPaginationItem[]> {
+    const localPokemons$ = from([this.getLocalPokemons()]).pipe(
+      map((pokemons: Pokemon[]) => {
+        return pokemons.map((pokemon: Pokemon) => {
+          return {
+            name: pokemon.name,
+            url: `${this.BASE_URL}/pokemon/${pokemon.id}/`
+          }
+        })
+      })
+    )
+    const ApiPokemons$ = this.http.get<any>(`${this.BASE_URL}/pokemon/?limit=${this.MAX_POKEMON_ID}`)
+    return forkJoin([ApiPokemons$, localPokemons$]).pipe(
+      map(([apiPokemons, localPokemons]) => {
+        return apiPokemons.results.concat(localPokemons)
+      })
+    )
+      
   }
 
   getPokemonAbilities(): Observable<PokemonPaginationItem> {

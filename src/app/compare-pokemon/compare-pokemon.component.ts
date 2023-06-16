@@ -18,7 +18,8 @@ export class ComparePokemonComponent implements OnInit {
     this.pokemonService.getPokemonPagination()
       .subscribe(
         (pokemons: any) => {
-          this.pokemons = pokemons.results
+          console.log(pokemons)
+          this.pokemons = pokemons
         }
       )
     this.route.paramMap

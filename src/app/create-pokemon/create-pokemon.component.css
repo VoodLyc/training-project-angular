@@ -81,6 +81,13 @@ img {
     border: 1px solid rgba(212, 217, 222, 1);
 }
 
-input.ng-invalid.ng-touched {
-    border: 1px solid red;
+.form__msg {
+    font-size: 14px;
+}
+
+.form__submit {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
 }

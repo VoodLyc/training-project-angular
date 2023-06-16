@@ -66,9 +66,6 @@ export class CreatePokemonComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.createPokemonForm)
-    console.log(this.frontImage)
-    console.log(this.backImage)
     const pokemon = Pokemon.Pokemon(
       this.pokemonService.generatePokemonId(),
       this.createPokemonForm.value['name'],
@@ -82,5 +79,7 @@ export class CreatePokemonComponent implements OnInit {
     )
     this.pokemonService.saveLocalPokemon(pokemon)
     this.createPokemonForm.reset()
+    this.frontImage = ''
+    this.backImage = ''
   }
 }

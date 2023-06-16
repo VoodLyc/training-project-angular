@@ -2,6 +2,7 @@
     height: 500px;
     width: 400px;
     display: flex;
+    gap: 5px;
     align-items: center;
     justify-content: center;
     flex-direction: column;

@@ -45,6 +45,10 @@
             <input type="file" id="pokemonBackImage" formControlName="backImage" (change)="onSelectBackImage($event)"
                 accept="image/png, image/jpeg">
         </div>
-        <button type="submit" [disabled]="!createPokemonForm.valid">Create Pokemon</button>
+        <div class="form__submit">
+            <span *ngIf="createPokemonForm.invalid" class="form__msg">All fields are <b>required</b>, please fill the
+                form</span>
+            <button type="submit" [disabled]="!createPokemonForm.valid">Create Pokemon</button>
+        </div>
     </form>
 </div>
