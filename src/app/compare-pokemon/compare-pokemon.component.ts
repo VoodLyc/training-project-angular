@@ -18,7 +18,6 @@ export class ComparePokemonComponent implements OnInit {
     this.pokemonService.getPokemonPagination()
       .subscribe(
         (pokemons: any) => {
-          console.log(pokemons)
           this.pokemons = pokemons
         }
       )

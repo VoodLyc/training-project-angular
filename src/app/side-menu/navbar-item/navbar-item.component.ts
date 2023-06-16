@@ -25,10 +25,6 @@ export class NavbarItemComponent implements OnInit, OnDestroy {
     )
   }
 
-  onSelectItem() {
-    this.sideMenuService.setSelectedItem(this.item)
-  }
-
   ngOnDestroy(): void {
     this.isCollapsedSubscription.unsubscribe()
   }

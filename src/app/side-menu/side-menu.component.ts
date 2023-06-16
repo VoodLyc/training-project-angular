@@ -32,15 +32,11 @@ export class SideMenuComponent implements OnInit, OnDestroy {
         this.pokemon = pokemon
         if (this.pokemon) {
           this.navbarItems = this.sideMenuService.getNavbarItems()
-          this.navbarItems[0].setUrl(['/pokemon', this.pokemon.id])
-          this.navbarItems[1].setUrl(['/compare', this.pokemon.id, this.pokemon.id])
+          this.navbarItems[0].setUrl(['pokemon', this.pokemon.id])
+          this.navbarItems[1].setUrl(['compare', this.pokemon.id, this.pokemon.id])
         }
       }
     )
-  }
-
-  isSelected(item: NavbarItem) {
-    return this.sideMenuService.isSelected(item)
   }
 
   collapse() {
