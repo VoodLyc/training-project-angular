@@ -1,9 +1,9 @@
 <app-card [height]="'200px'" [width]="'200px'">
-    <div *ngIf="pokemon" class="pokemon-preview-card">
+    <div *ngIf="pokemon$ | async" class="pokemon-preview-card">
         <div class="pokemon-preview-card__img-container" (click)="onPokemonSelected()">
-            <img [src]="pokemon.frontImage">
+            <img [src]="(pokemon$ | async)?.frontImage">
         </div>
-        <span class="pokemon-name" (click)="onPokemonSelected()">{{ pokemon.getCapitalizedName() }}</span>
+        <span class="pokemon-name" (click)="onPokemonSelected()">{{ (pokemon$ | async)?.name | title }}</span>
         <span>2 hours ago</span>
     </div>
 </app-card>

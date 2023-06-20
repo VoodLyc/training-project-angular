@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import { PokemonPaginationItem } from 'src/app/shared/models/pokemon-pagination-item.model';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
-import { capitalizeText } from 'src/app/util';
 
 @Component({
   selector: 'app-compare',
@@ -40,10 +39,6 @@ export class CompareComponent implements OnInit, OnDestroy {
 
   resetSelectedPokemon(name: string) {
     this.selectedPokemon = { name: name, url: this.pokemonService.getPokemonURL(this.pokemonId) }
-  }
-
-  getCapitalizedName(name: string) {
-    return capitalizeText(name)
   }
 
   ngOnDestroy(): void {

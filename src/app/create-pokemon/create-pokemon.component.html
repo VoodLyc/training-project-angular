@@ -25,10 +25,10 @@
             <p-dropdown id="ability" formControlName="ability" [options]="abilities" optionLabel="name" [filter]="true"
                 filterBy="name" [style]="{'min-width':'200px'}">
                 <ng-template let-ability pTemplate="selectedItem">
-                    <span>{{ getCapitalizedName(ability.name) }}</span>
+                    <span>{{ ability.name | title }}</span>
                 </ng-template>
                 <ng-template let-ability pTemplate="item">
-                    <span>{{ getCapitalizedName(ability.name) }}</span>
+                    <span>{{ ability.name | title }}</span>
                 </ng-template>
             </p-dropdown>
         </div>

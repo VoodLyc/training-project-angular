@@ -23,6 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SideMenuService } from './shared/services/side-menu.service';
 import { CompareComponent } from './compare-pokemon/compare/compare.component';
 import { CreatePokemonComponent } from './create-pokemon/create-pokemon.component';
+import { TitlePipe } from './shared/pipes/title.pipe';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CreatePokemonComponent } from './create-pokemon/create-pokemon.componen
     ComparePokemonComponent,
     ErrorPageComponent,
     CompareComponent,
-    CreatePokemonComponent
+    CreatePokemonComponent,
+    TitlePipe
   ],
   imports: [
     BrowserModule,

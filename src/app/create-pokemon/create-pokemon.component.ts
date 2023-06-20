@@ -4,7 +4,6 @@ import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Pokemon } from '../shared/models/pokemon.model';
-import { capitalizeText } from '../util';
 
 @Component({
   selector: 'app-create-pokemon',
@@ -59,10 +58,6 @@ export class CreatePokemonComponent implements OnInit {
       }
       reader.readAsDataURL(event.target.files[0])
     }
-  }
-
-  getCapitalizedName(text: string) {
-    return capitalizeText(text)
   }
 
   onSubmit() {

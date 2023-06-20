@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
 
@@ -9,14 +10,12 @@ import { PokemonService } from 'src/app/shared/services/pokemon.service';
 })
 export class PreviewCardComponent implements OnInit {
   @Input() pokemonId: number
-  pokemon: Pokemon
+  pokemon$: Observable<Pokemon>
   
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit() {
-    this.pokemonService.getPokemon(this.pokemonId).subscribe(
-      (pokemon: Pokemon) => this.pokemon = pokemon
-    )
+    this.pokemon$ = this.pokemonService.getPokemon(this.pokemonId)
   }
 
   onPokemonSelected() {

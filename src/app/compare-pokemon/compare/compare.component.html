@@ -2,10 +2,10 @@
     <p-dropdown *ngIf="pokemon" [options]="pokemons" [(ngModel)]="selectedPokemon" optionLabel="name" [filter]="true"
         filterBy="name" (onChange)="onChangePokemon($event)">
         <ng-template pTemplate="selectedItem">
-            <span *ngIf="selectedPokemon && pokemon">{{ getCapitalizedName(selectedPokemon.name) }}</span>
+            <span *ngIf="selectedPokemon && pokemon">{{ selectedPokemon.name | title }}</span>
         </ng-template>
         <ng-template let-pokemon pTemplate="item">
-            <span *ngIf="pokemon">{{ getCapitalizedName(pokemon.name) }}</span>
+            <span *ngIf="pokemon">{{ pokemon.name | title }}</span>
         </ng-template>
     </p-dropdown>
     <img *ngIf="pokemon" [src]="pokemon.frontImage" alt="front image of the pokemon">
@@ -14,11 +14,11 @@
             <span class="card-header-title">INFORMATION</span>
             <div class="information-card__attribute-cell">
                 <span class="title">NAME</span>
-                <span class="value">{{ pokemon.getCapitalizedName() }}</span>
+                <span class="value">{{ pokemon.name | title }}</span>
             </div>
             <div class="information-card__attribute-cell">
                 <span class="title">TYPE</span>
-                <span class="value">{{ pokemon.getCapitalizedType() }}</span>
+                <span class="value">{{ pokemon.type | title }}</span>
             </div>
             <div class="information-card__attribute-cell">
                 <span class="title">HEIGHT</span>
@@ -30,7 +30,7 @@
             </div>
             <div class="information-card__attribute-cell">
                 <span class="title">ABILITY</span>
-                <span class="value">{{ pokemon.getCapitalizedAbility() }}</span>
+                <span class="value">{{ pokemon.ability | title }}</span>
             </div>
             <div class="information-card__attribute-cell">
                 <span class="title">BASE EXPERIENCE</span>
