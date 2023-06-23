@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pokemon } from 'src/app/shared/models/pokemon.model';
 import { PokemonService } from 'src/app/shared/services/pokemon.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-preview-card',
@@ -12,13 +13,13 @@ export class PreviewCardComponent implements OnInit {
   @Input() pokemonId: number
   pokemon$: Observable<Pokemon>
   
-  constructor(private pokemonService: PokemonService) {}
+  constructor(private pokemonService: PokemonService, private router: Router) {}
 
   ngOnInit() {
     this.pokemon$ = this.pokemonService.getPokemon(this.pokemonId)
   }
 
   onPokemonSelected() {
-    this.pokemonService.fetchSelectedPokemon(this.pokemonId)
+    this.router.navigate(['/pokemon', this.pokemonId])
   }
 }

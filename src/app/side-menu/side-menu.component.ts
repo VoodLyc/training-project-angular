@@ -22,6 +22,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   constructor(private sideMenuService: SideMenuService, private pokemonService: PokemonService) { }
 
   ngOnInit(): void {
+    this.navbarItems = this.sideMenuService.getNavbarItems()
     this.isCollapsedSubscription = this.sideMenuService.getIsCollapsed().subscribe(
       (isCollapsed: boolean) => {
         this.isCollapsed = isCollapsed
@@ -31,9 +32,10 @@ export class SideMenuComponent implements OnInit, OnDestroy {
       (pokemon: Pokemon) => {
         this.pokemon = pokemon
         if (this.pokemon) {
-          this.navbarItems = this.sideMenuService.getNavbarItems()
           this.navbarItems[0].setUrl(['pokemon', this.pokemon.id])
           this.navbarItems[1].setUrl(['compare', this.pokemon.id, this.pokemon.id])
+          console.log('pokemon', this.navbarItems[0].url)
+          console.log('compare', this.navbarItems[1].url)
         }
       }
     )

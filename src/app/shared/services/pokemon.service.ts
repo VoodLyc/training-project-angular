@@ -23,38 +23,31 @@ export class PokemonService {
 
   constructor(private http: HttpClient) {
     this.loadLocalPokemons()
-    setTimeout(() => {
-      if(!this.pokemonSubject.value || Object.keys(this.pokemonSubject.value).length === 0) {
-        this.fetchSelectedPokemon(25)
-      }
-    }, 300)
+    if (localStorage.getItem('selectedPokemon') === null) {
+      this.fetchSelectedPokemon(25)
+    }
+    else {
+      const id = +localStorage.getItem('selectedPokemon')
+      this.fetchSelectedPokemon(id)
+    }
   }
 
   fetchSelectedPokemon(pokemonId: number): void {
-    if (!this.isLocalPokemon(pokemonId)) {
-      this.getPokemon(pokemonId).subscribe(
-        (pokemon: Pokemon) => {
-          this.pokemonSubject.next(pokemon)
-        }
-      )
-    }
-    else {
-      this.pokemonSubject.next(this.getLocalPokemon(pokemonId))
-    }
+    this.getPokemon(pokemonId).subscribe(
+      (pokemon: Pokemon) => {
+        this.pokemonSubject.next(pokemon)
+        localStorage.setItem('selectedPokemon', pokemon.id.toString())
+      }
+    )
     this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
   }
 
   fetchComparePokemon(index: number, pokemonId: number): void {
-    if (!this.isLocalPokemon(pokemonId)) {
-      this.getPokemon(pokemonId).subscribe(
-        (pokemon: Pokemon) => {
-          this.getComparePokemonSubject(index).next(pokemon)
-        }
-      )
-    }
-    else {
-      this.getComparePokemonSubject(index).next(this.getLocalPokemon(pokemonId))
-    }
+    this.getPokemon(pokemonId).subscribe(
+      (pokemon: Pokemon) => {
+        this.getComparePokemonSubject(index).next(pokemon)
+      }
+    )
   }
 
   generatePokemonId(): number {
@@ -77,7 +70,7 @@ export class PokemonService {
     }
     this.localPokemons = JSON.parse(localStorage.getItem('pokemons'))
   }
-  
+
   private getLocalPokemons(): Pokemon[] {
     return this.localPokemons
   }
@@ -104,7 +97,7 @@ export class PokemonService {
         return apiPokemons.results.concat(localPokemons)
       })
     )
-      
+
   }
 
   getPokemonAbilities(): Observable<PokemonPaginationItem> {
@@ -112,11 +105,11 @@ export class PokemonService {
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
-    if(!this.isLocalPokemon(pokemonId)) {
+    if (!this.isLocalPokemon(pokemonId)) {
       return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
-      .pipe(
-        map((pokemon: Pokemon) => Pokemon.PokemonJSON(pokemon))
-      )
+        .pipe(
+          map((pokemon: Pokemon) => Pokemon.PokemonJSON(pokemon))
+        )
     }
     else {
       return of(this.getLocalPokemon(pokemonId))
