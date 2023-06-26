@@ -34,8 +34,6 @@ export class SideMenuComponent implements OnInit, OnDestroy {
         if (this.pokemon) {
           this.navbarItems[0].setUrl(['pokemon', this.pokemon.id])
           this.navbarItems[1].setUrl(['compare', this.pokemon.id, this.pokemon.id])
-          console.log('pokemon', this.navbarItems[0].url)
-          console.log('compare', this.navbarItems[1].url)
         }
       }
     )

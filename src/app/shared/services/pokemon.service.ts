@@ -3,7 +3,7 @@ import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
 import { Observable, BehaviorSubject, from, of, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 
 @Injectable()
@@ -64,6 +64,12 @@ export class PokemonService {
     return pokemon
   }
 
+  private getLocalPokemonObservable(pokemonId: number): Observable<Pokemon> {
+    return of(this.getLocalPokemon(pokemonId)).pipe(
+      delay(100)
+    )
+  }
+
   private loadLocalPokemons(): void {
     if (localStorage.getItem('pokemons') == null) {
       localStorage.setItem('pokemons', '[]')
@@ -105,14 +111,14 @@ export class PokemonService {
   }
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
-    if (!this.isLocalPokemon(pokemonId)) {
+    if (this.isLocalPokemon(pokemonId)) {
+      return this.getLocalPokemonObservable(pokemonId)
+    }
+    else {
       return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
         .pipe(
           map((pokemon: Pokemon) => Pokemon.PokemonJSON(pokemon))
         )
-    }
-    else {
-      return of(this.getLocalPokemon(pokemonId))
     }
   }
 
@@ -158,8 +164,8 @@ export class PokemonService {
       max += this.NUMBER_OF_POKEMONS_DOWN - Math.abs(pokemonId - this.MIN_POKEMON_ID)
     }
     else if (max > this.MAX_POKEMON_ID + this.localPokemons.length) {
-      max = this.MAX_POKEMON_ID
-      min -= this.NUMBER_OF_POKEMONS_UP + Math.abs(pokemonId - this.MAX_POKEMON_ID)
+      max = this.MAX_POKEMON_ID + this.localPokemons.length
+      min -= this.NUMBER_OF_POKEMONS_UP + Math.abs(pokemonId - (this.MAX_POKEMON_ID + this.localPokemons.length))
     }
 
     return { min, max }
