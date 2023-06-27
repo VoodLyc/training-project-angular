@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable, BehaviorSubject, from, of, forkJoin } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class PokemonService {
@@ -21,7 +22,7 @@ export class PokemonService {
   private types: string[] = ['Normal', 'Fire', 'Water', 'Grass', 'Flying', 'Fighting', 'Poison', 'Electric', 'Ground', 'Rock', 'Psychic', 'Ice', 'Bug', 'Ghost', 'Steel', 'Dragon', 'Dark', 'Fairy']
   private localPokemons: Pokemon[] = []
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastr: ToastrService) {
     this.loadLocalPokemons()
     if (localStorage.getItem('selectedPokemon') === null) {
       this.fetchSelectedPokemon(25)
@@ -33,13 +34,19 @@ export class PokemonService {
   }
 
   fetchSelectedPokemon(pokemonId: number): void {
-    this.getPokemon(pokemonId).subscribe(
-      (pokemon: Pokemon) => {
+    this.getPokemon(pokemonId).subscribe({
+      next: (pokemon: Pokemon) => {
         this.pokemonSubject.next(pokemon)
         localStorage.setItem('selectedPokemon', pokemon.id.toString())
+        this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
+        this.toastr.success(`The pokemon ${pokemonId} was loaded successfully`, 'Pokemon loaded!');
+        console.log('succes!')
+      },
+      error: error => {
+        this.toastr.error(error, 'Error loading Pokemon')
+        console.log('error!')
       }
-    )
-    this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
+    })
   }
 
   fetchComparePokemon(index: number, pokemonId: number): void {
@@ -58,16 +65,21 @@ export class PokemonService {
     return pokemonId > this.MAX_POKEMON_ID
   }
 
-  private getLocalPokemon(pokemonId: number): Pokemon {
-    const id = pokemonId - (this.MAX_POKEMON_ID + 1)
-    const pokemon = Object.assign(new Pokemon(), this.localPokemons[id])
-    return pokemon
-  }
+  // private getLocalPokemon(pokemonId: number): Pokemon {
+  //   const id = pokemonId - (this.MAX_POKEMON_ID + 1)
+  //   const pokemon = Object.assign(new Pokemon(), this.localPokemons[id])
+  //   return pokemon
+  // }
 
-  private getLocalPokemonObservable(pokemonId: number): Observable<Pokemon> {
-    return of(this.getLocalPokemon(pokemonId)).pipe(
-      delay(100)
-    )
+  private getLocalPokemon(pokemonId: number): Observable<Pokemon> {
+    return new Observable<Pokemon>(subscriber => {
+      if (pokemonId > this.getMaxLocalPokemonsId()) {
+        subscriber.error(`The pokemon ${pokemonId} does not exists`)
+      }
+      const id = pokemonId - (this.MAX_POKEMON_ID + 1)
+      subscriber.next(Object.assign(new Pokemon(), this.localPokemons[id]))
+      subscriber.complete()
+    })
   }
 
   private loadLocalPokemons(): void {
@@ -79,6 +91,10 @@ export class PokemonService {
 
   private getLocalPokemons(): Pokemon[] {
     return this.localPokemons
+  }
+
+  private getMaxLocalPokemonsId(): number {
+    return this.localPokemons.length + this.MAX_POKEMON_ID
   }
 
   saveLocalPokemon(pokemon: Pokemon): void {
@@ -112,7 +128,9 @@ export class PokemonService {
 
   getPokemon(pokemonId: number): Observable<Pokemon> {
     if (this.isLocalPokemon(pokemonId)) {
-      return this.getLocalPokemonObservable(pokemonId)
+      return this.getLocalPokemon(pokemonId).pipe(
+        delay(100)
+      )
     }
     else {
       return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonId}/`)
@@ -164,8 +182,8 @@ export class PokemonService {
       max += this.NUMBER_OF_POKEMONS_DOWN - Math.abs(pokemonId - this.MIN_POKEMON_ID)
     }
     else if (max > this.MAX_POKEMON_ID + this.localPokemons.length) {
-      max = this.MAX_POKEMON_ID + this.localPokemons.length
-      min -= this.NUMBER_OF_POKEMONS_UP + Math.abs(pokemonId - (this.MAX_POKEMON_ID + this.localPokemons.length))
+      max = this.getMaxLocalPokemonsId()
+      min -= this.NUMBER_OF_POKEMONS_UP + Math.abs(pokemonId - this.getMaxLocalPokemonsId())
     }
 
     return { min, max }

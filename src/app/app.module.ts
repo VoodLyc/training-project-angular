@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { SideMenuComponent } from './side-menu/side-menu.component';
@@ -51,7 +52,10 @@ import { TitlePipe } from './shared/pipes/title.pipe';
     BrowserAnimationsModule,
     DropdownModule,
     ReactiveFormsModule,
-    MultiSelectModule
+    MultiSelectModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    })
   ],
   providers: [PokemonService, SideMenuService],
   bootstrap: [AppComponent]
