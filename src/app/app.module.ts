@@ -25,6 +25,7 @@ import { SideMenuService } from './shared/services/side-menu.service';
 import { CompareComponent } from './compare-pokemon/compare/compare.component';
 import { CreatePokemonComponent } from './create-pokemon/create-pokemon.component';
 import { TitlePipe } from './shared/pipes/title.pipe';
+import { TypeDirective } from './shared/directives/type.directive';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { TitlePipe } from './shared/pipes/title.pipe';
     ErrorPageComponent,
     CompareComponent,
     CreatePokemonComponent,
-    TitlePipe
+    TitlePipe,
+    TypeDirective
   ],
   imports: [
     BrowserModule,
@@ -54,7 +56,9 @@ import { TitlePipe } from './shared/pipes/title.pipe';
     ReactiveFormsModule,
     MultiSelectModule,
     ToastrModule.forRoot({
-      preventDuplicates: true
+      preventDuplicates: true,
+      maxOpened: 3,
+      autoDismiss: true
     })
   ],
   providers: [PokemonService, SideMenuService],

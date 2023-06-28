@@ -39,12 +39,10 @@ export class PokemonService {
         this.pokemonSubject.next(pokemon)
         localStorage.setItem('selectedPokemon', pokemon.id.toString())
         this.previewPokemonIndexes.next(this.generatePokemonIndexesList(pokemonId))
-        this.toastr.success(`The pokemon ${pokemonId} was loaded successfully`, 'Pokemon loaded!');
-        console.log('succes!')
+        this.toastr.success(`The pokemon ${pokemonId} was loaded successfully`, 'Pokemon loaded!', { timeOut: 1500 });
       },
       error: error => {
-        this.toastr.error(error, 'Error loading Pokemon')
-        console.log('error!')
+        this.toastr.error(error, 'Error loading Pokemon', { timeOut: 2000 })
       }
     })
   }
