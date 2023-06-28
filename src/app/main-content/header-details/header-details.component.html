@@ -1,7 +1,7 @@
 <div *ngIf="pokemon" class="pokemon-details">
     <div class="pokemon-details__specie-info">
         <span class="pokemon-name">{{ pokemon.getCapitalizedName() }}</span>
-        <span class="pokemon-type">{{ pokemon.getUpperCaseType() }}</span>
+        <span class="pokemon-type" appType [offsetX]="1" [offsetY]="-3">{{ pokemon.getUpperCaseType() }}</span>
         <span class="pokemon-ability">{{ pokemon.getCapitalizedAbility() }}</span>
     </div>
     <div class="pokemon-details__attributes-info">

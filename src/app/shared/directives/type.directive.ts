@@ -1,9 +1,12 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from "@angular/core";
 
 @Directive({
     selector: '[appType]'
 })
 export class TypeDirective {
+    @Input() offsetY: number = 0
+    @Input() offsetX: number = 3
+
     colors = {
         bug: '#92BC2C',
         fire: '#FBA54C',
@@ -42,8 +45,8 @@ export class TypeDirective {
         this.renderer.setStyle(tooltip, 'display', 'flex')
         this.renderer.setStyle(tooltip, 'align-items', 'center')
         this.renderer.setStyle(tooltip, 'justify-content', 'center')
-        this.renderer.setStyle(tooltip, 'top', `${tooltipTop}px`);
-        this.renderer.setStyle(tooltip, 'left', `${tooltipLeft + 3}px`);
+        this.renderer.setStyle(tooltip, 'top', `${tooltipTop + this.offsetY}px`);
+        this.renderer.setStyle(tooltip, 'left', `${tooltipLeft + this.offsetX}px`);
         this.renderer.setStyle(tooltip, 'background-color', this.colors[type])
         this.renderer.setStyle(tooltip, 'border-radius', '50%')
         this.renderer.setStyle(img, 'width', '14px')
