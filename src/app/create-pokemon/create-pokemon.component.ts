@@ -28,10 +28,12 @@ export class CreatePokemonComponent implements OnInit {
       }
     )
     this.createPokemonForm = new FormGroup({
-      'name': new FormControl(null, Validators.required),
+      'name': new FormControl(null, [Validators.required, Validators.maxLength(20)]),
       'type': new FormControl('Normal', Validators.required),
-      'height': new FormControl(null, Validators.required),
-      'weight': new FormControl(null, Validators.required),
+      'bmi': new FormGroup({
+        'height': new FormControl(null, Validators.required),
+        'weight': new FormControl(null, Validators.required),
+      }, this.BmiCalculation),
       'experience': new FormControl(null, Validators.required),
       'ability': new FormControl(null, Validators.required),
       'frontImage': new FormControl(null, Validators.required),
@@ -44,7 +46,6 @@ export class CreatePokemonComponent implements OnInit {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>) => {
         this.frontImage = e.target?.result as string
-        console.log(this.frontImage)
       }
       reader.readAsDataURL(event.target.files[0])
     }
@@ -76,5 +77,18 @@ export class CreatePokemonComponent implements OnInit {
     this.createPokemonForm.reset()
     this.frontImage = ''
     this.backImage = ''
+  }
+
+  BmiCalculation(formGroup: FormGroup): { [s: string]: boolean } {
+    const weightControl = formGroup.get('weight')
+    const heightControl = formGroup.get('height')
+    if (weightControl.value && heightControl.value !== 0) {
+      const weight = weightControl.value / 10
+      const height = heightControl.value / 10
+      const bmi = weight / (Math.pow(height, 2))
+      if (bmi >= 25) {
+        return { 'overweight': true }
+      }
+    }
   }
 }

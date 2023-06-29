@@ -45,8 +45,8 @@ export class TypeDirective {
         this.renderer.setStyle(tooltip, 'display', 'flex')
         this.renderer.setStyle(tooltip, 'align-items', 'center')
         this.renderer.setStyle(tooltip, 'justify-content', 'center')
-        this.renderer.setStyle(tooltip, 'top', `${tooltipTop + this.offsetY}px`);
-        this.renderer.setStyle(tooltip, 'left', `${tooltipLeft + this.offsetX}px`);
+        this.renderer.setStyle(tooltip, 'top', `${tooltipTop + this.offsetY}px`)
+        this.renderer.setStyle(tooltip, 'left', `${tooltipLeft + this.offsetX}px`)
         this.renderer.setStyle(tooltip, 'background-color', this.colors[type])
         this.renderer.setStyle(tooltip, 'border-radius', '50%')
         this.renderer.setStyle(img, 'width', '14px')
@@ -58,7 +58,6 @@ export class TypeDirective {
 
     @HostListener('mouseover') onMouseOver() {
         this.tooltip = this.createTooltip()
-        const type = this.elRef.nativeElement.textContent.toLowerCase()
         this.renderer.appendChild(this.elRef.nativeElement, this.tooltip)
     }
 

@@ -18,6 +18,12 @@
     gap: 5px;
 }
 
+.form__group-bmi {
+    grid-column: span 2;
+    display: flex;
+    gap: 30px;
+}
+
 .form__input {
     padding: 10px 10px;
     width: 200px;

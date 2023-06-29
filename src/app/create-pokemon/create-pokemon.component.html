@@ -8,13 +8,15 @@
             <label for="type" class="form__label">Type</label>
             <p-dropdown id="type" formControlName="type" [options]="types" [style]="{'width':'200px'}"></p-dropdown>
         </div>
-        <div class="form__group">
-            <label for="height" class="form__label">Height (Decimeters)</label>
-            <input type="number" id="height" formControlName="height" min="1" max="9999" class="form__input">
-        </div>
-        <div class="form__group">
-            <label for="weight" class="form__label">Weight (Hectograms)</label>
-            <input type="number" id="weight" formControlName="weight" min="1" max="9999" class="form__input">
+        <div formGroupName="bmi" class="form__group-bmi">
+            <div class="form__group">
+                <label for="height" class="form__label">Height (Decimeters)</label>
+                <input type="number" id="height" formControlName="height" min="1" max="9999" class="form__input">
+            </div>
+            <div class="form__group">
+                <label for="weight" class="form__label">Weight (Hectograms)</label>
+                <input type="number" id="weight" formControlName="weight" min="1" max="9999" class="form__input">
+            </div>
         </div>
         <div class="form__group">
             <label for="experience" class="form__label">Base experience</label>
