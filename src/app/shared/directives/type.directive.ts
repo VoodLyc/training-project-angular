@@ -35,9 +35,9 @@ export class TypeDirective {
         const tooltip = this.renderer.createElement('div')
         const img = this.renderer.createElement('img')
         const type = this.elRef.nativeElement.textContent.toLowerCase()
-        const elRefRect = this.elRef.nativeElement.getBoundingClientRect();
-        const tooltipTop = elRefRect.top + window.scrollY;
-        const tooltipLeft = elRefRect.right + window.scrollX;
+        const elRefRect = this.elRef.nativeElement.getBoundingClientRect()
+        const tooltipTop = elRefRect.top
+        const tooltipLeft = elRefRect.right
         this.renderer.appendChild(tooltip, img)
         this.renderer.setStyle(tooltip, 'position', 'absolute')
         this.renderer.setStyle(tooltip, 'width', '24px')

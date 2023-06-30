@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../shared/services/pokemon.service';
 import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EMPTY, Observable, Subscription, catchError, map, of, switchMap } from 'rxjs';
 import { Pokemon } from '../shared/models/pokemon.model';
 
 @Component({
@@ -28,17 +28,17 @@ export class CreatePokemonComponent implements OnInit {
       }
     )
     this.createPokemonForm = new FormGroup({
-      'name': new FormControl(null, [Validators.required, Validators.maxLength(20)]),
+      'name': new FormControl(null, [Validators.required, Validators.maxLength(20)], this.duplicatedName.bind(this)),
       'type': new FormControl('Normal', Validators.required),
       'bmi': new FormGroup({
         'height': new FormControl(null, Validators.required),
         'weight': new FormControl(null, Validators.required),
-      }, this.BmiCalculation),
+      }, this.bmiCalculation),
       'experience': new FormControl(null, Validators.required),
       'ability': new FormControl(null, Validators.required),
       'frontImage': new FormControl(null, Validators.required),
       'backImage': new FormControl(null, Validators.required)
-    })
+    }, [this.minExperience])
   }
 
   onSelectFrontImage(event) {
@@ -66,8 +66,8 @@ export class CreatePokemonComponent implements OnInit {
       this.pokemonService.generatePokemonId(),
       this.createPokemonForm.value['name'],
       this.createPokemonForm.value['type'],
-      this.createPokemonForm.value['height'],
-      this.createPokemonForm.value['weight'],
+      this.createPokemonForm.value['bmi.height'],
+      this.createPokemonForm.value['bmi.weight'],
       this.createPokemonForm.value['ability'].name,
       this.createPokemonForm.value['experience'],
       this.frontImage,
@@ -79,16 +79,35 @@ export class CreatePokemonComponent implements OnInit {
     this.backImage = ''
   }
 
-  BmiCalculation(formGroup: FormGroup): { [s: string]: boolean } {
-    const weightControl = formGroup.get('weight')
-    const heightControl = formGroup.get('height')
-    if (weightControl.value && heightControl.value !== 0) {
-      const weight = weightControl.value / 10
-      const height = heightControl.value / 10
-      const bmi = weight / (Math.pow(height, 2))
-      if (bmi >= 25) {
-        return { 'overweight': true }
-      }
+  bmiCalculation(formGroup: FormGroup): { [key: string]: boolean } {
+    const weight = formGroup.get('weight').value / 10
+    const height = formGroup.get('height').value / 10
+    const bmi = weight / (Math.pow(height, 2))
+    if (bmi >= 25) {
+      return { 'overweight': true }
     }
+  }
+
+  minExperience(control: AbstractControl): { [key: string]: boolean } {
+    const type = control.get('type').value
+    const experience = control.get('experience').value
+    if (type === 'Dragon' && experience < 500) {
+      return { 'minExperience': true }
+    }
+  }
+
+  duplicatedName(control: FormControl): Promise<any> | Observable<any> {
+    const name = control.value.toLowerCase()
+    return this.pokemonService.getPokemonByName(name).pipe(
+      switchMap((pokemon: Pokemon) => {
+        return new Observable<{ [key: string]: boolean }>(subscriber => {
+          if (pokemon) {
+            subscriber.next({ 'duplicatedName': true })
+          }
+          subscriber.complete()
+        })
+      }),
+      catchError(() => of(null))
+    )
   }
 }

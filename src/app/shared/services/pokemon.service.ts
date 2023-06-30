@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
-import { Observable, BehaviorSubject, from, of, forkJoin } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, from, of, forkJoin, EMPTY } from 'rxjs';
+import { catchError, delay, map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -136,6 +136,10 @@ export class PokemonService {
           map((pokemon: Pokemon) => Pokemon.PokemonJSON(pokemon))
         )
     }
+  }
+
+  getPokemonByName(pokemonName: string): Observable<Pokemon> {
+    return this.http.get<Pokemon>(`${this.BASE_URL}/pokemon/${pokemonName}/`)
   }
 
   getComparePokemon(index: number): Observable<Pokemon> {
