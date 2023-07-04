@@ -26,11 +26,7 @@ export class CreatePokemonComponent implements OnInit {
     this.abilitiesSubscription = this.pokemonService.getPokemonAbilities().subscribe(
       (abilities: any) => {
         this.abilities = abilities.results
-        this.filteredAbilities = [...abilities.results]
-        const index = this.abilities.map(ability => ability.name).indexOf('solid-rock')
-        this.filteredAbilities.splice(index, 1)
-        console.log(this.abilities)
-        console.log(this.filteredAbilities)
+        this.filterAbilities('Normal')
       }
     )
     this.createPokemonForm = new FormGroup({
@@ -107,16 +103,18 @@ export class CreatePokemonComponent implements OnInit {
 
   duplicatedName(control: FormControl): Promise<any> | Observable<any> {
     const name = control.value.toLowerCase()
-    return this.pokemonService.getPokemonByName(name).pipe(
-      switchMap((pokemon: Pokemon) => {
+    return this.pokemonService.getPokemonPagination().pipe(
+      switchMap((pokemons: PokemonPaginationItem[]) => {
         return new Observable<{ [key: string]: boolean }>(subscriber => {
-          if (pokemon) {
+          const index = pokemons.map(pokemon => pokemon.name.toLocaleLowerCase()).indexOf(name)
+          if (index !== -1) {
             subscriber.next({ 'duplicatedName': true })
+          } else {
+            subscriber.next(null)
           }
           subscriber.complete()
         })
-      }),
-      catchError(() => of(null))
+      })
     )
   }
 

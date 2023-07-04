@@ -62,13 +62,7 @@ export class PokemonService {
   private isLocalPokemon(pokemonId: number): boolean {
     return pokemonId > this.MAX_POKEMON_ID
   }
-
-  // private getLocalPokemon(pokemonId: number): Pokemon {
-  //   const id = pokemonId - (this.MAX_POKEMON_ID + 1)
-  //   const pokemon = Object.assign(new Pokemon(), this.localPokemons[id])
-  //   return pokemon
-  // }
-
+  
   private getLocalPokemon(pokemonId: number): Observable<Pokemon> {
     return new Observable<Pokemon>(subscriber => {
       if (pokemonId > this.getMaxLocalPokemonsId()) {
