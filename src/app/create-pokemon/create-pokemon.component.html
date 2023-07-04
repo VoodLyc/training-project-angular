@@ -24,7 +24,7 @@
         </div>
         <div class="form__group multiselect">
             <label for="ability" class="form__label">Ability</label>
-            <p-dropdown id="ability" formControlName="ability" [options]="abilities" optionLabel="name" [filter]="true"
+            <p-dropdown id="ability" formControlName="ability" [options]="filteredAbilities" optionLabel="name" [filter]="true"
                 filterBy="name" [style]="{'min-width':'200px'}">
                 <ng-template let-ability pTemplate="selectedItem">
                     <span>{{ ability.name | title }}</span>

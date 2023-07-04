@@ -14,6 +14,7 @@ export class CreatePokemonComponent implements OnInit {
   types: string[]
   createPokemonForm: FormGroup
   abilities: PokemonPaginationItem[]
+  filteredAbilities: PokemonPaginationItem[]
   abilitiesSubscription: Subscription
   frontImage: string
   backImage: string
@@ -25,6 +26,11 @@ export class CreatePokemonComponent implements OnInit {
     this.abilitiesSubscription = this.pokemonService.getPokemonAbilities().subscribe(
       (abilities: any) => {
         this.abilities = abilities.results
+        this.filteredAbilities = [...abilities.results]
+        const index = this.abilities.map(ability => ability.name).indexOf('solid-rock')
+        this.filteredAbilities.splice(index, 1)
+        console.log(this.abilities)
+        console.log(this.filteredAbilities)
       }
     )
     this.createPokemonForm = new FormGroup({
@@ -39,6 +45,9 @@ export class CreatePokemonComponent implements OnInit {
       'frontImage': new FormControl(null, Validators.required),
       'backImage': new FormControl(null, Validators.required)
     }, [this.minExperience])
+    this.createPokemonForm.get('type').valueChanges.subscribe(value => {
+      this.filterAbilities(value)
+    })
   }
 
   onSelectFrontImage(event) {
@@ -109,5 +118,17 @@ export class CreatePokemonComponent implements OnInit {
       }),
       catchError(() => of(null))
     )
+  }
+
+  filterAbilities(value: string) {
+    if (value === 'Rock') {
+      this.filteredAbilities = this.abilities
+    }
+    else {
+      let filteredAbilities = [...this.abilities]
+      const index = filteredAbilities.map(ability => ability.name).indexOf('solid-rock')
+      filteredAbilities.splice(index, 1)
+      this.filteredAbilities = filteredAbilities
+    }
   }
 }
