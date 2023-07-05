@@ -26,6 +26,7 @@ import { CompareComponent } from './compare-pokemon/compare/compare.component';
 import { CreatePokemonComponent } from './create-pokemon/create-pokemon.component';
 import { TitlePipe } from './shared/pipes/title.pipe';
 import { TypeDirective } from './shared/directives/type.directive';
+import { PrintValidationErrorComponent } from './shared/components/print-validation-error/print-validation-error.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { TypeDirective } from './shared/directives/type.directive';
     CompareComponent,
     CreatePokemonComponent,
     TitlePipe,
-    TypeDirective
+    TypeDirective,
+    PrintValidationErrorComponent
   ],
   imports: [
     BrowserModule,

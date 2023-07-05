@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PokemonService } from '../shared/services/pokemon.service';
 import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EMPTY, Observable, Subscription, catchError, map, of, switchMap } from 'rxjs';
+import { AbstractControl, FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
+import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Pokemon } from '../shared/models/pokemon.model';
 
 @Component({
@@ -10,12 +10,12 @@ import { Pokemon } from '../shared/models/pokemon.model';
   templateUrl: './create-pokemon.component.html',
   styleUrls: ['./create-pokemon.component.css']
 })
-export class CreatePokemonComponent implements OnInit {
+export class CreatePokemonComponent implements OnInit, OnDestroy {
   types: string[]
   createPokemonForm: FormGroup
   abilities: PokemonPaginationItem[]
   filteredAbilities: PokemonPaginationItem[]
-  abilitiesSubscription: Subscription
+  ngUnsubscribe = new Subject<void>()
   frontImage: string
   backImage: string
 
@@ -23,7 +23,9 @@ export class CreatePokemonComponent implements OnInit {
 
   ngOnInit(): void {
     this.types = this.pokemonService.getTypes()
-    this.abilitiesSubscription = this.pokemonService.getPokemonAbilities().subscribe(
+    this.pokemonService.getPokemonAbilities().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(
       (abilities: any) => {
         this.abilities = abilities.results
         this.filterAbilities('Normal')
@@ -41,12 +43,14 @@ export class CreatePokemonComponent implements OnInit {
       'frontImage': new FormControl(null, Validators.required),
       'backImage': new FormControl(null, Validators.required)
     }, [this.minExperience])
-    this.createPokemonForm.get('type').valueChanges.subscribe(value => {
+    this.createPokemonForm.get('type').valueChanges.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(value => {
       this.filterAbilities(value)
     })
   }
 
-  onSelectFrontImage(event) {
+  onSelectFrontImage(event): void {
     if (event.target.files) {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -56,7 +60,7 @@ export class CreatePokemonComponent implements OnInit {
     }
   }
 
-  onSelectBackImage(event) {
+  onSelectBackImage(event): void {
     if (event.target.files) {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -66,7 +70,7 @@ export class CreatePokemonComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const pokemon = Pokemon.Pokemon(
       this.pokemonService.generatePokemonId(),
       this.createPokemonForm.value['name'],
@@ -84,7 +88,7 @@ export class CreatePokemonComponent implements OnInit {
     this.backImage = ''
   }
 
-  bmiCalculation(formGroup: FormGroup): { [key: string]: boolean } {
+  bmiCalculation(formGroup: FormGroup): ValidationErrors | null {
     const weight = formGroup.get('weight').value / 10
     const height = formGroup.get('height').value / 10
     const bmi = weight / (Math.pow(height, 2))
@@ -93,21 +97,21 @@ export class CreatePokemonComponent implements OnInit {
     }
   }
 
-  minExperience(control: AbstractControl): { [key: string]: boolean } {
-    const type = control.get('type').value
-    const experience = control.get('experience').value
+  minExperience(form: AbstractControl): ValidationErrors | null {
+    const type = form.get('type').value
+    const experience = form.get('experience').value
     if (type === 'Dragon' && experience < 500) {
       return { 'minExperience': true }
     }
   }
 
-  duplicatedName(control: FormControl): Promise<any> | Observable<any> {
+  duplicatedName(control: FormControl): Observable<ValidationErrors> | Observable<null> {
     const name = control.value.toLowerCase()
     return this.pokemonService.getPokemonPagination().pipe(
       switchMap((pokemons: PokemonPaginationItem[]) => {
-        return new Observable<{ [key: string]: boolean }>(subscriber => {
-          const index = pokemons.map(pokemon => pokemon.name.toLocaleLowerCase()).indexOf(name)
-          if (index !== -1) {
+        return new Observable<ValidationErrors | null>(subscriber => {
+          const pokemon = pokemons.find(pokemon => pokemon.name.toLowerCase() === name)
+          if (pokemon) {
             subscriber.next({ 'duplicatedName': true })
           } else {
             subscriber.next(null)
@@ -118,15 +122,17 @@ export class CreatePokemonComponent implements OnInit {
     )
   }
 
-  filterAbilities(value: string) {
+  filterAbilities(value: string): void {
     if (value === 'Rock') {
       this.filteredAbilities = this.abilities
     }
     else {
-      let filteredAbilities = [...this.abilities]
-      const index = filteredAbilities.map(ability => ability.name).indexOf('solid-rock')
-      filteredAbilities.splice(index, 1)
-      this.filteredAbilities = filteredAbilities
+      this.filteredAbilities = [...this.abilities].filter(ability => ability.name !== 'solid-rock')
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next()
+    this.ngUnsubscribe.complete()
   }
 }

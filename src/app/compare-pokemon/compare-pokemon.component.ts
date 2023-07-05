@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PokemonService } from '../shared/services/pokemon.service';
 import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-compare-pokemon',
@@ -12,28 +12,29 @@ import { Subscription } from 'rxjs';
 export class ComparePokemonComponent implements OnInit, OnDestroy {
   pokemonIds: string[]
   pokemons: PokemonPaginationItem[]
-  paginationSubscription: Subscription
-  routeSubscription: Subscription
+  ngUnsubscribe = new Subject<void>()
 
   constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.paginationSubscription = this.pokemonService.getPokemonPagination()
-      .subscribe(
-        (pokemons: any) => {
-          this.pokemons = pokemons
-        }
-      )
-    this.routeSubscription = this.route.paramMap
-      .subscribe(
-        (params: Params) => {
-          this.pokemonIds = [params.get('id1'), params.get('id2')]
-        }
-      )
+  ngOnInit(): void {
+    this.pokemonService.getPokemonPagination().pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(
+      (pokemons: any) => {
+        this.pokemons = pokemons
+      }
+    )
+    this.route.paramMap.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(
+      (params: Params) => {
+        this.pokemonIds = [params.get('id1'), params.get('id2')]
+      }
+    )
   }
 
   ngOnDestroy(): void {
-    this.paginationSubscription.unsubscribe()
-    this.routeSubscription.unsubscribe()
+    this.ngUnsubscribe.next()
+    this.ngUnsubscribe.complete()
   }
 }

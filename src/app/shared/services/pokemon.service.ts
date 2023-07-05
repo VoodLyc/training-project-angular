@@ -111,7 +111,6 @@ export class PokemonService {
         return apiPokemons.results.concat(localPokemons)
       })
     )
-
   }
 
   getPokemonAbilities(): Observable<PokemonPaginationItem> {

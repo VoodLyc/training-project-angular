@@ -3,6 +3,7 @@
         <div class="form__group">
             <label for="name" class="form__label">Name</label>
             <input type="text" id="name" formControlName="name" class="form__input">
+            <app-print-validation-error [control]="createPokemonForm.get('name')"></app-print-validation-error>
         </div>
         <div class="form__group">
             <label for="type" class="form__label">Type</label>
@@ -48,7 +49,7 @@
                 accept="image/png, image/jpeg">
         </div>
         <div class="form__submit">
-            <span *ngIf="createPokemonForm.invalid" class="form__msg">All fields are <b>required</b>, please fill the
+            <span *ngIf="!createPokemonForm.valid" class="form__msg">All fields are <b>required</b>, please fill the
                 form</span>
             <button type="submit" [disabled]="!createPokemonForm.valid">Create Pokemon</button>
         </div>
