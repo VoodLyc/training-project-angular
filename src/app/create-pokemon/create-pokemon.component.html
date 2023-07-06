@@ -12,16 +12,20 @@
         <div formGroupName="bmi" class="form__group-bmi">
             <div class="form__group">
                 <label for="height" class="form__label">Height (Decimeters)</label>
-                <input type="number" id="height" formControlName="height" min="1" max="9999" class="form__input">
+                <input type="number" id="height" formControlName="height" class="form__input">
+                <app-print-validation-error [control]="createPokemonForm.get('bmi').get('height')"></app-print-validation-error>
             </div>
             <div class="form__group">
                 <label for="weight" class="form__label">Weight (Hectograms)</label>
-                <input type="number" id="weight" formControlName="weight" min="1" max="9999" class="form__input">
+                <input type="number" id="weight" formControlName="weight" class="form__input">
+                <app-print-validation-error [control]="createPokemonForm.get('bmi').get('weight')"></app-print-validation-error>
             </div>
+            <app-print-validation-error class="form__group-bmi__msg" [control]="createPokemonForm.get('bmi')"></app-print-validation-error>
         </div>
         <div class="form__group">
             <label for="experience" class="form__label">Base experience</label>
-            <input type="number" id="experience" formControlName="experience" min="1" max="9999" class="form__input">
+            <input type="number" id="experience" formControlName="experience" class="form__input">
+            <app-print-validation-error [control]="createPokemonForm.get('experience')"></app-print-validation-error>
         </div>
         <div class="form__group multiselect">
             <label for="ability" class="form__label">Ability</label>
@@ -40,6 +44,7 @@
             <img [src]="frontImage" alt="front image of the pokemon">
             <input type="file" id="pokemonFrontImage" formControlName="frontImage" (change)="onSelectFrontImage($event)"
                 accept="image/png, image/jpeg">
+            <app-print-validation-error [control]="createPokemonForm.get('frontImage')"></app-print-validation-error>
         </div>
 
         <div class="form__group form__img">
@@ -47,6 +52,7 @@
             <img [src]="backImage" alt="back image of the pokemon">
             <input type="file" id="pokemonBackImage" formControlName="backImage" (change)="onSelectBackImage($event)"
                 accept="image/png, image/jpeg">
+            <app-print-validation-error [control]="createPokemonForm.get('backImage')"></app-print-validation-error>
         </div>
         <div class="form__submit">
             <span *ngIf="!createPokemonForm.valid" class="form__msg">All fields are <b>required</b>, please fill the

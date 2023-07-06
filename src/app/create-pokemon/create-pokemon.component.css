@@ -8,20 +8,24 @@
 .form {
     display: grid;
     grid-template-columns: repeat(2, 230px);
-    grid-template-rows: repeat(10, 90px);
-    padding-left: 40px;
+    grid-template-rows: repeat(5, auto);
 }
 
 .form__group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 }
 
 .form__group-bmi {
     grid-column: span 2;
-    display: flex;
-    gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 230px);
+    grid-template-rows: repeat(3, auto);
+}
+
+.form__group-bmi__msg {
+    grid-column: span 2;
+    justify-self: center;
 }
 
 .form__input {
@@ -38,10 +42,11 @@
     font-weight: bold;
     font-size: 15px;
     color: #253262;
+    margin-bottom: 5px;
 }
 
 .form__img {
-    grid-row: span 3;
+    grid-row: span 2;
 }
 
 button {
@@ -92,8 +97,11 @@ img {
 }
 
 .form__submit {
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
     grid-column: span 2;
 }
+
+input.ng-invalid.ng-dirty, input.ng-invalid.ng-touched {
+    border: 1px solid #e74c3c !important; 
+  }

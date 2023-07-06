@@ -27,6 +27,7 @@ import { CreatePokemonComponent } from './create-pokemon/create-pokemon.componen
 import { TitlePipe } from './shared/pipes/title.pipe';
 import { TypeDirective } from './shared/directives/type.directive';
 import { PrintValidationErrorComponent } from './shared/components/print-validation-error/print-validation-error.component';
+import { BoldPipe } from './shared/pipes/bold.pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { PrintValidationErrorComponent } from './shared/components/print-validat
     CreatePokemonComponent,
     TitlePipe,
     TypeDirective,
-    PrintValidationErrorComponent
+    PrintValidationErrorComponent,
+    BoldPipe
   ],
   imports: [
     BrowserModule,

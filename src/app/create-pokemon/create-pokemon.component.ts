@@ -35,10 +35,10 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
       'name': new FormControl(null, [Validators.required, Validators.maxLength(20)], this.duplicatedName.bind(this)),
       'type': new FormControl('Normal', Validators.required),
       'bmi': new FormGroup({
-        'height': new FormControl(null, Validators.required),
-        'weight': new FormControl(null, Validators.required),
+        'height': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(999)]),
+        'weight': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(9999)]),
       }, this.bmiCalculation),
-      'experience': new FormControl(null, Validators.required),
+      'experience': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(9999)]),
       'ability': new FormControl(null, Validators.required),
       'frontImage': new FormControl(null, Validators.required),
       'backImage': new FormControl(null, Validators.required)
@@ -92,8 +92,8 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
     const weight = formGroup.get('weight').value / 10
     const height = formGroup.get('height').value / 10
     const bmi = weight / (Math.pow(height, 2))
-    if (bmi >= 25) {
-      return { 'overweight': true }
+    if (isFinite(bmi) && bmi >= 25) {
+      return { 'overweight': { actualBmi: bmi.toFixed(1) } }
     }
   }
 
