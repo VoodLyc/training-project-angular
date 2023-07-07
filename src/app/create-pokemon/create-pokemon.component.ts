@@ -4,6 +4,7 @@ import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.
 import { AbstractControl, FormControl, FormGroup, Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Pokemon } from '../shared/models/pokemon.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-pokemon',
@@ -19,7 +20,7 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
   frontImage: string
   backImage: string
 
-  constructor(private pokemonService: PokemonService) { }
+  constructor(private pokemonService: PokemonService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.types = this.pokemonService.getTypes()
@@ -49,9 +50,6 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
     ).subscribe(value => {
       this.filterAbilities(value)
       this.createPokemonForm.get('experience').updateValueAndValidity()
-    })
-    this.createPokemonForm.valueChanges.subscribe(() => {
-      console.log(this.createPokemonForm)
     })
   }
 
@@ -94,6 +92,7 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
     this.createPokemonForm.reset()
     this.frontImage = ''
     this.backImage = ''
+    this.toastr.success(`The pokemon was added successfully`, 'Pokemon created!', { timeOut: 2000 });
   }
 
   bmiCalculation(formGroup: FormGroup): ValidationErrors | null {
