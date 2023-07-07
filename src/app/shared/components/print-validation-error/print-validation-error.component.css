@@ -1,12 +1,10 @@
 .error-container {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-top: 5px;
+    flex-direction: column;
 }
 
 .error-msg {
     color: red;
     font-size: 13px;
-    
+    margin-top: 2px;
 }

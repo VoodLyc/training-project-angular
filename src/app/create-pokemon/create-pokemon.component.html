@@ -46,8 +46,7 @@
                 accept="image/png, image/jpeg">
             <app-print-validation-error [control]="createPokemonForm.get('frontImage')"></app-print-validation-error>
         </div>
-
-        <div class="form__group form__img">
+        <div class="form__group">
             <label for="pokemonBackImage" class="form__label">Back image</label>
             <img [src]="backImage" alt="back image of the pokemon">
             <input type="file" id="pokemonBackImage" formControlName="backImage" (change)="onSelectBackImage($event)"

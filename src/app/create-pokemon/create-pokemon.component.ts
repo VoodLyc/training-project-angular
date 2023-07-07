@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PokemonService } from '../shared/services/pokemon.service';
 import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
-import { AbstractControl, FormControl, FormGroup, Validators, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
 import { Pokemon } from '../shared/models/pokemon.model';
 
@@ -38,35 +38,43 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
         'height': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(999)]),
         'weight': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(9999)]),
       }, this.bmiCalculation),
-      'experience': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(9999)]),
-      'ability': new FormControl(null, Validators.required),
+      'experience': new FormControl(null, [Validators.required, Validators.min(1), Validators.max(999)]),
+      'ability': new FormControl({ name: 'stench', url: 'https://pokeapi.co/api/v2/ability/1/' }, Validators.required),
       'frontImage': new FormControl(null, Validators.required),
       'backImage': new FormControl(null, Validators.required)
-    }, [this.minExperience])
+    })
+    this.createPokemonForm.get('experience').addValidators(this.minExperience(this.createPokemonForm.get('type')))
     this.createPokemonForm.get('type').valueChanges.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe(value => {
       this.filterAbilities(value)
+      this.createPokemonForm.get('experience').updateValueAndValidity()
+    })
+    this.createPokemonForm.valueChanges.subscribe(() => {
+      console.log(this.createPokemonForm)
     })
   }
 
-  onSelectFrontImage(event): void {
-    if (event.target.files) {
-      const reader = new FileReader()
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.frontImage = e.target?.result as string
-      }
-      reader.readAsDataURL(event.target.files[0])
-    }
+  onSelectFrontImage(event: InputEvent): void {
+    this.saveLocalImg(event, (result: string) => {
+      this.frontImage = result
+    })
   }
 
-  onSelectBackImage(event): void {
-    if (event.target.files) {
+  onSelectBackImage(event: InputEvent): void {
+    this.saveLocalImg(event, (result: string) => {
+      this.backImage = result
+    })
+  }
+
+  private saveLocalImg(event: InputEvent, callback: (result: string) => void): void {
+    const input = event.target as HTMLInputElement
+    if (input.files) {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>) => {
-        this.backImage = e.target?.result as string
+        callback(e.target?.result as string)
       }
-      reader.readAsDataURL(event.target.files[0])
+      reader.readAsDataURL(input.files[0])
     }
   }
 
@@ -75,8 +83,8 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
       this.pokemonService.generatePokemonId(),
       this.createPokemonForm.value['name'],
       this.createPokemonForm.value['type'],
-      this.createPokemonForm.value['bmi.height'],
-      this.createPokemonForm.value['bmi.weight'],
+      this.createPokemonForm.value['bmi']['height'],
+      this.createPokemonForm.value['bmi']['weight'],
       this.createPokemonForm.value['ability'].name,
       this.createPokemonForm.value['experience'],
       this.frontImage,
@@ -97,11 +105,13 @@ export class CreatePokemonComponent implements OnInit, OnDestroy {
     }
   }
 
-  minExperience(form: AbstractControl): ValidationErrors | null {
-    const type = form.get('type').value
-    const experience = form.get('experience').value
-    if (type === 'Dragon' && experience < 500) {
-      return { 'minExperience': true }
+  minExperience(typeControl: AbstractControl): ValidatorFn {
+    return (experienceControl: FormControl): ValidationErrors | null => {
+      const type = typeControl.value
+      const experience = experienceControl.value
+      if (type === 'Dragon' && experience > 0 && experience < 500) {
+        return { 'minExperience': true }
+      }
     }
   }
 

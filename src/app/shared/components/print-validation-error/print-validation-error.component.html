@@ -1,5 +1,5 @@
-<div *ngIf="control.errors && (control.dirty || control.touched)" class="error-container">
-    <div *ngFor="let error of control.errors | keyvalue">
+<div *ngIf="control.errors && (control.dirty || control.touched)" >
+    <div *ngFor="let error of control.errors | keyvalue" class="error-container">
         <p *ngIf="control.errors[error.key]" [innerHTML]="getErrorMessage(error.key) | bold" class="error-msg"></p>
     </div>
 </div>
