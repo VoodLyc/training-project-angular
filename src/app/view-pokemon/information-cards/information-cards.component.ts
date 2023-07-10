@@ -15,7 +15,7 @@ export class InformationCardsComponent implements OnInit, OnDestroy {
   pokemonSubscription: Subscription
   routeSubscription: Subscription
 
-  constructor(private pokemonService: PokemonService, private route: ActivatedRoute, private toastr: ToastrService) { }
+  constructor(private pokemonService: PokemonService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.pokemonSubscription = this.pokemonService.getSelectedPokemon().subscribe(
@@ -27,6 +27,7 @@ export class InformationCardsComponent implements OnInit, OnDestroy {
       .subscribe(
         (params: Params) => {
           const id = +params.get('id')
+          console.log('change params:',id)
           if (id) {
             this.pokemonService.fetchSelectedPokemon(id)
           }

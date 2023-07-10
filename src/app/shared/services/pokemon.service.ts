@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Pokemon } from '../models/pokemon.model'
 import { generateArrayRange } from '../../util';
 import { HttpClient } from '@angular/common/http'
-import { Observable, BehaviorSubject, from, of, forkJoin, EMPTY } from 'rxjs';
-import { catchError, delay, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, from, forkJoin } from 'rxjs';
+import { delay, map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 import { ToastrService } from 'ngx-toastr';
 
@@ -24,13 +24,17 @@ export class PokemonService {
 
   constructor(private http: HttpClient, private toastr: ToastrService) {
     this.loadLocalPokemons()
-    if (localStorage.getItem('selectedPokemon') === null) {
+    let selectedPokemon = localStorage.getItem('selectedPokemon')
+    if (selectedPokemon === null) {
       this.fetchSelectedPokemon(25)
     }
     else {
-      const id = +localStorage.getItem('selectedPokemon')
-      this.fetchSelectedPokemon(id)
+      this.fetchSelectedPokemon(+selectedPokemon)
     }
+  }
+
+  restoreSelectedPokemon() {
+
   }
 
   fetchSelectedPokemon(pokemonId: number): void {
@@ -62,7 +66,7 @@ export class PokemonService {
   private isLocalPokemon(pokemonId: number): boolean {
     return pokemonId > this.MAX_POKEMON_ID
   }
-  
+
   private getLocalPokemon(pokemonId: number): Observable<Pokemon> {
     return new Observable<Pokemon>(subscriber => {
       if (pokemonId > this.getMaxLocalPokemonsId()) {

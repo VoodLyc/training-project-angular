@@ -1,0 +1,48 @@
+.container {
+    height: 100%;
+    width: 100%;
+    border-radius: 40px;
+    display: flex;
+    overflow: hidden;
+}
+
+.header {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 30px;
+    background-color: #efefef;
+}
+
+.arrow {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 2px 2px 5px -2px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    background-color: white;
+    transition: 0.5s ease;
+}
+
+.arrow--right {
+    transform: rotate(180deg);
+}
+
+.header-container {
+    flex-grow: 2;
+    background-color: #efefef;
+}
+
+.router-container {
+    height: calc(100% - 100px);
+    width: 100%;
+    overflow: auto;
+}

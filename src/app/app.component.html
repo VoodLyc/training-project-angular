@@ -1,14 +1,1 @@
-<div class="app-container">
-    <app-side-menu></app-side-menu>
-    <div class="main-content-container">
-        <div class="main-content__header">
-            <button (click)="collapseSideMenu()" class="arrow">
-                <i class='bx bx-chevron-left' [ngClass]="{'arrow--right': isCollapsed}"></i>
-            </button>
-        </div>
-        <div class="router-container">
-            <router-outlet></router-outlet>
-        </div>
-    </div>
-    <app-side-list></app-side-list>
-</div>
+<router-outlet></router-outlet>

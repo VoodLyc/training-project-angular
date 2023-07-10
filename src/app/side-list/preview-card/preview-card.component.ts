@@ -12,14 +12,14 @@ import { Router } from '@angular/router';
 export class PreviewCardComponent implements OnInit {
   @Input() pokemonId: number
   pokemon$: Observable<Pokemon>
-  
-  constructor(private pokemonService: PokemonService, private router: Router) {}
+
+  constructor(private pokemonService: PokemonService, private router: Router) { }
 
   ngOnInit() {
     this.pokemon$ = this.pokemonService.getPokemon(this.pokemonId)
   }
 
   onPokemonSelected() {
-    this.router.navigate(['/pokemon', this.pokemonId])
+    this.router.navigate(['pokemon', 'view', this.pokemonId])
   }
 }
