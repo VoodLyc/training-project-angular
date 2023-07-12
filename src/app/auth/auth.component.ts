@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from './auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -13,7 +15,10 @@ export class AuthComponent implements OnInit {
   isLoginModeSubject: BehaviorSubject<boolean> = new BehaviorSubject(true)
   authForm: FormGroup
 
-  onSwitchMode() {
+
+  constructor(private authService: AuthService, private toastr: ToastrService) { }
+
+  onSwitchMode(): void {
     this.isLoginModeSubject.next(!this.isLoginModeSubject.value)
   }
 
@@ -30,7 +35,7 @@ export class AuthComponent implements OnInit {
     )
   }
 
-  switchValidators() {
+  switchValidators(): void {
     this.authForm.reset()
     let emailControl = this.authForm.get('email')
     let passwordControl = this.authForm.get('password')
@@ -39,8 +44,27 @@ export class AuthComponent implements OnInit {
       passwordControl.setValidators(Validators.required)
     }
     else {
-      emailControl.setValidators([Validators.required, Validators.maxLength(50)])
+      emailControl.setValidators([Validators.required, Validators.email, Validators.maxLength(50)])
       passwordControl.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(50)])
     }
+  }
+
+  onSubmit(): void {
+    const email = this.authForm.value['email']
+    const password = this.authForm.value['password']
+    if (this.isLoginMode) {
+
+    }
+    else {
+      this.authService.signUp(email, password).subscribe({
+        next: () => {
+          this.toastr.success(`You registered successfully`, 'Registered!', { timeOut: 5000 });
+        },
+        error: (errorMessage: Error) => {
+          this.toastr.error(errorMessage.message, 'Error', { timeOut: 5000 })
+        }
+      })
+    }
+    this.authForm.reset()
   }
 }

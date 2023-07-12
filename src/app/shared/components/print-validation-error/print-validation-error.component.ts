@@ -16,6 +16,7 @@ export class PrintValidationErrorComponent {
       min: `The minimum value for this field is **${this.control.errors[errorKey].min}**`,
       maxlength: `The maximum length for this field is **${this.control.errors[errorKey].requiredLength}**, but actual length is **${this.control.errors[errorKey].actualLength}**`,
       minlength: `The minimum length for this field is **${this.control.errors[errorKey].requiredLength}**, but actual length is **${this.control.errors[errorKey].actualLength}**`,
+      email: 'A valid email is required',
       duplicatedName: `A pokemon with the name **${this.control.value?.toString()?.toLowerCase()}** already exists, please choose a different name`,
       overweight: `The pokemon is overweight, actual BMI: **${this.control.errors[errorKey].actualBmi}**`,
       minExperience: `The minimum value when the pokemon is of type **Dragon** is **500**`
