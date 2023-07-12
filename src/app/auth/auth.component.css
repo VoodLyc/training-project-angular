@@ -1,0 +1,88 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.title {
+    color: #277dff;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.form__input {
+    padding: 10px 10px;
+    width: 300px;
+    font-size: 15px;
+    border: 1px solid rgba(212, 217, 222, 1);
+    border-radius: 6px;
+    outline: transparent;
+    color: #6A686D;
+}
+
+.form__label {
+    font-weight: bold;
+    font-size: 15px;
+    color: #253262;
+    margin-bottom: 5px;
+}
+
+button {
+    width: 300px;
+    height: fit-content;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 15px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #277dff;
+    margin-top: 10px;
+}
+
+button:disabled {
+    background-color: #79a9f2;
+}
+
+.signup-button {
+    color: #277dff;
+    width: fit-content;
+    padding: 5px 5px;
+    background-color: transparent;
+}
+
+.signup-text {
+    font-size: 14px;
+}
+
+.form__msg {
+    font-size: 14px;
+}
+
+.form__submit {
+    display: flex;
+    flex-direction: column;
+    grid-column: span 2;
+}
+
+input.ng-invalid.ng-dirty,
+input.ng-invalid.ng-touched {
+    border: 1px solid #e74c3c !important;
+}

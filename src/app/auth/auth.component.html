@@ -1,16 +1,20 @@
 <div class="container">
-    <form>
+    <form [formGroup]="authForm" class="form">
+        <span class="title">{{ isLoginMode ? 'Log In Now' : 'Sign Up Now'}}</span>
         <div class="form__group">
             <label for="email" class="form__label">E-mail</label>
-            <input type="email" id="emil" formControlName="email" class="form__input">
+            <input type="email" id="email" formControlName="email" class="form__input">
+            <app-print-validation-error [control]="authForm.get('email')"></app-print-validation-error>
         </div>
         <div class="form__group">
             <label for="password" class="form__label">Password</label>
             <input type="password" id="password" formControlName="password" class="form__input">
+            <app-print-validation-error [control]="authForm.get('password')"></app-print-validation-error>
         </div>
+        <button>{{ isLoginMode ? 'Log In' : 'Sign Up' }}</button>
         <div>
-            <button>Sign Up</button>
-            <button>Login</button>
+            <span class="signup-text">{{ isLoginMode ? "Don't have an account?" : 'Already have an account?'}}</span>
+            <button class="signup-button" (click)="onSwitchMode()">{{ isLoginMode ? 'Sign Up' : 'Log In' }}</button>
         </div>
     </form>
 </div>
