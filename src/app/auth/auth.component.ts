@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { authReponseData } from './auth.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -16,7 +18,7 @@ export class AuthComponent implements OnInit {
   authForm: FormGroup
 
 
-  constructor(private authService: AuthService, private toastr: ToastrService) { }
+  constructor(private authService: AuthService, private toastr: ToastrService, private router: Router) { }
 
   onSwitchMode(): void {
     this.isLoginModeSubject.next(!this.isLoginModeSubject.value)
@@ -40,7 +42,7 @@ export class AuthComponent implements OnInit {
     let emailControl = this.authForm.get('email')
     let passwordControl = this.authForm.get('password')
     if (this.isLoginMode) {
-      emailControl.setValidators(Validators.required)
+      emailControl.setValidators([Validators.required, Validators.email])
       passwordControl.setValidators(Validators.required)
     }
     else {
@@ -53,18 +55,34 @@ export class AuthComponent implements OnInit {
     const email = this.authForm.value['email']
     const password = this.authForm.value['password']
     if (this.isLoginMode) {
-
+      this.logIn(email, password)
     }
     else {
-      this.authService.signUp(email, password).subscribe({
-        next: () => {
-          this.toastr.success(`You registered successfully`, 'Registered!', { timeOut: 5000 });
-        },
-        error: (errorMessage: Error) => {
-          this.toastr.error(errorMessage.message, 'Error', { timeOut: 5000 })
-        }
-      })
+      this.signUp(email, password)
     }
     this.authForm.reset()
+  }
+
+
+  signUp(email: string, password: string) {
+    this.authService.signUp(email, password).subscribe({
+      next: () => {
+        this.toastr.success(`You registered successfully`, 'Registered!', { timeOut: 5000 });
+      },
+      error: (errorMessage: Error) => {
+        this.toastr.error(errorMessage.message, 'Error', { timeOut: 5000 })
+      }
+    })
+  }
+
+  logIn(email: string, password: string) {
+    this.authService.logIn(email, password).subscribe({
+      next: (authReponse: authReponseData) => {
+        this.router.navigate(['pokemon', 'view', '25'])
+      },
+      error: (errorMessage: Error) => {
+        this.toastr.error(errorMessage.message, 'Error', { timeOut: 5000 })
+      }
+    })
   }
 }

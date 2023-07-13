@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { User } from './user.model';
+import { UserPreview } from './user.model';
 import { SideMenuService } from 'src/app/shared/services/side-menu.service';
 import { Subscription } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 
 
 export class UserDetailsComponent implements OnInit, OnDestroy {
-  @Input() user: User
+  @Input() user: UserPreview
   isCollapsed: boolean
   isCollapsedSubscription: Subscription
 

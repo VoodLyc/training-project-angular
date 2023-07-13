@@ -6,11 +6,12 @@ import { CreatePokemonComponent } from './create-pokemon/create-pokemon.componen
 import { PokemonComponent } from './pokemon/pokemon.component';
 import { AuthComponent } from './auth/auth.component';
 import { ViewPokemonComponent } from './view-pokemon/view-pokemon.component';
+import { IsAuthGuard } from './auth/auth.guard';
 
 const appRoutes: Routes = [
-    { path: '', redirectTo: 'auth', pathMatch: 'full' },
+    { path: '', redirectTo: 'pokemon/view/25', pathMatch: 'full' },
     { path: 'auth', component: AuthComponent },
-    { path: 'pokemon', component: PokemonComponent, children: [
+    { path: 'pokemon', component: PokemonComponent, canActivate: [IsAuthGuard], children: [
         { path: 'view/:id', component: ViewPokemonComponent },
         { path: 'compare/:id1/:id2', component: ComparePokemonComponent },
         { path: 'create', component: CreatePokemonComponent }, 
