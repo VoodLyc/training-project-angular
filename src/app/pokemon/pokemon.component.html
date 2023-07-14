@@ -5,6 +5,9 @@
             <button (click)="collapseSideMenu()" class="arrow">
                 <i class='bx bx-chevron-left' [ngClass]="{'arrow--right': isCollapsed}"></i>
             </button>
+            <button (click)="logOut()" class="logout-button">
+                <i class='bx bx-log-out logout-button-icon'></i>
+            </button>
         </div>
         <div class="router-container">
             <router-outlet></router-outlet>

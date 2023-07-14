@@ -51,6 +51,10 @@ export class AuthService {
       )
   }
 
+  logOut(): void {
+    this.user.next(null)
+  }
+
   private handleError(errorRes: HttpErrorResponse) {
     let errorMessage = 'An error occurred'
     if (!errorRes.error || !errorRes.error.error) {

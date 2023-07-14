@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { PokemonService } from '../shared/services/pokemon.service';
 import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-compare-pokemon',

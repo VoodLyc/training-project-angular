@@ -19,5 +19,5 @@ export class SideMenuService {
 
     getNavbarItems(): NavbarItem[] {
         return this.navbarItems
-    }
+    } 
 }

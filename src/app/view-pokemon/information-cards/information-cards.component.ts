@@ -27,7 +27,6 @@ export class InformationCardsComponent implements OnInit, OnDestroy {
       .subscribe(
         (params: Params) => {
           const id = +params.get('id')
-          console.log('change params:',id)
           if (id) {
             this.pokemonService.fetchSelectedPokemon(id)
           }
