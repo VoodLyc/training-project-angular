@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { authReponseData } from './auth.model';
 import { User } from '../shared/models/user.model';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -19,8 +20,9 @@ export class AuthService {
     USER_DISABLED: 'This user has been disabled, please create another account'
   }
   user = new BehaviorSubject<User>(null)
+  private tokenExpirationTimer: any
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   signUp(email: string, password: string): Observable<authReponseData> {
     return this.http.post<authReponseData>(`${this.BASE_URL}signUp?key=${this.API_KEY}`,
@@ -51,8 +53,32 @@ export class AuthService {
       )
   }
 
+  autoLogIn(): void {
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    if (userData) {
+      const user = new User(userData.id, userData.email, userData._token, new Date(userData._tokenExpirationDate))
+      if(user.token) {
+        this.user.next(user)
+        const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
+        this.autoLogOut(expirationDuration)
+      }
+    }
+  }
+
   logOut(): void {
     this.user.next(null)
+    localStorage.removeItem('userData')
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer)
+    }
+    this.tokenExpirationTimer = null
+    this.router.navigate(['auth'])
+  }
+  
+  autoLogOut(expirationDuration: number): void {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logOut()
+    }, expirationDuration)
   }
 
   private handleError(errorRes: HttpErrorResponse) {
@@ -66,10 +92,12 @@ export class AuthService {
     return throwError(() => new Error(errorMessage))
   }
 
-  private handleAuthentication(id: string, email: string, token: string, expiresIn: number) {
+  private handleAuthentication(id: string, email: string, token: string, expiresIn: number): void {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000)
     const user = new User(id, email, token, expirationDate)
+    localStorage.setItem('userData', JSON.stringify(user))
     this.user.next(user)
+    this.autoLogOut(expiresIn * 1000)
   }
 
   getUser(): Observable<User> {

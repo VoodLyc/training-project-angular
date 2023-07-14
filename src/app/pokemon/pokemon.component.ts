@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SideMenuService } from '../shared/services/side-menu.service';
 import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon',
@@ -14,7 +13,7 @@ export class PokemonComponent implements OnInit, OnDestroy {
   isCollapsed: boolean
   isCollapsedSubscription: Subscription
 
-  constructor(private sideMenuService: SideMenuService, private authService: AuthService, private router: Router) { }
+  constructor(private sideMenuService: SideMenuService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.isCollapsedSubscription = this.sideMenuService.getIsCollapsed().subscribe(
@@ -30,7 +29,6 @@ export class PokemonComponent implements OnInit, OnDestroy {
 
   logOut() {
     this.authService.logOut()
-    this.router.navigate(['auth'])
   }
 
   ngOnDestroy(): void {
