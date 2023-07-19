@@ -7,7 +7,7 @@ import { CreatePokemonComponent } from "./create-pokemon/create-pokemon/create-p
 import { ViewPokemonComponent } from "./view-pokemon/view-pokemon.component";
 
 const pokemonRoutes: Routes = [
-    { path: 'pokemon', component: PokemonComponent, canActivate: [IsAuthGuard], children: [
+    { path: '', component: PokemonComponent, canActivate: [IsAuthGuard], children: [
         { path: 'view/:id', component: ViewPokemonComponent },
         { path: 'compare/:id1/:id2', component: ComparePokemonComponent },
         { path: 'create', component: CreatePokemonComponent }

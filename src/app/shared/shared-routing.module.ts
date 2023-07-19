@@ -11,4 +11,4 @@ const sharedRoutes: Routes = [
     exports: [RouterModule]
 })
 
-export class ShaerdRoutingModule {}
+export class SharedRoutingModule {}

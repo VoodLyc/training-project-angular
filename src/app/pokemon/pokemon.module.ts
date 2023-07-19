@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+
 import { ComparePokemonComponent } from "./compare-pokemon/compare-pokemon.component";
 import { CompareComponent } from "./compare-pokemon/compare/compare.component";
 import { CreatePokemonComponent } from "./create-pokemon/create-pokemon/create-pokemon.component";
@@ -10,10 +11,9 @@ import { InformationCardsComponent } from "./view-pokemon/information-cards/info
 import { PokemonComponent } from "./pokemon.component";
 import { PokemonRoutingModule } from "./pokemon-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { DropdownModule } from "primeng/dropdown";
 import { MultiSelectModule } from "primeng/multiselect";
-import { ShaerdRoutingModule } from "../shared/shared-routing.module";
+import { SharedRoutingModule } from "../shared/shared-routing.module";
 
 @NgModule({
     declarations: [
@@ -28,12 +28,11 @@ import { ShaerdRoutingModule } from "../shared/shared-routing.module";
     imports: [
         RouterModule, 
         SharedModule,
-        ShaerdRoutingModule,
+        SharedRoutingModule,
         PokemonRoutingModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        DropdownModule,
         ReactiveFormsModule,
+        FormsModule,
+        DropdownModule,
         MultiSelectModule,
     ],
     exports: [

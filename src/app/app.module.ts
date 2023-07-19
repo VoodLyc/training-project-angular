@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
-import { DropdownModule } from 'primeng/dropdown';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MultiSelectModule } from 'primeng/multiselect';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
@@ -13,8 +10,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SideMenuService } from './shared/services/side-menu.service';
 import { AuthComponent } from './auth/auth.component';
-import { PokemonModule } from './pokemon/pokemon.module';
 import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,20 +21,16 @@ import { SharedModule } from './shared/shared.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    DropdownModule,
     ReactiveFormsModule,
-    MultiSelectModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
       maxOpened: 3,
       autoDismiss: true
     }),
     SharedModule,
-    PokemonModule,
   ],
   providers: [PokemonService, SideMenuService],
   bootstrap: [AppComponent]
