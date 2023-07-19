@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SideMenuService } from '../shared/services/side-menu.service';
+import { SideMenuService } from '../../services/side-menu.service';
 import { NavbarItem } from './navbar-item/navbar-item.model';
-import { PokemonService } from '../shared/services/pokemon.service';
-import { Pokemon } from '../shared/models/pokemon.model';
+import { PokemonService } from '../../services/pokemon.service';
+import { Pokemon } from '../../models/pokemon.model';
 import { Subscription } from 'rxjs';
 
 @Component({

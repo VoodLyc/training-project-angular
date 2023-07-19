@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { PokemonService } from '../shared/services/pokemon.service';
-import { PokemonPaginationItem } from '../shared/models/pokemon-pagination-item.model';
+import { PokemonService } from '../../shared/services/pokemon.service';
+import { PokemonPaginationItem } from '../../shared/models/pokemon-pagination-item.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

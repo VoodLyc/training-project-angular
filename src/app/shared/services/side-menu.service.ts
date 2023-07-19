@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { NavbarItem } from "src/app/side-menu/navbar-item/navbar-item.model";
+import { NavbarItem } from "../components/side-menu/navbar-item/navbar-item.model";
 
 @Injectable({
     providedIn: 'root'
