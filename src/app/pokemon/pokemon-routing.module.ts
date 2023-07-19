@@ -11,8 +11,7 @@ const pokemonRoutes: Routes = [
         { path: 'view/:id', component: ViewPokemonComponent },
         { path: 'compare/:id1/:id2', component: ComparePokemonComponent },
         { path: 'create', component: CreatePokemonComponent }
-    ] },
-    { path: '**', redirectTo: '/not-found' }
+    ] }
 ]
 
 @NgModule({

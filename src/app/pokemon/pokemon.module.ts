@@ -13,7 +13,6 @@ import { PokemonRoutingModule } from "./pokemon-routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DropdownModule } from "primeng/dropdown";
 import { MultiSelectModule } from "primeng/multiselect";
-import { SharedRoutingModule } from "../shared/shared-routing.module";
 
 @NgModule({
     declarations: [
@@ -28,7 +27,6 @@ import { SharedRoutingModule } from "../shared/shared-routing.module";
     imports: [
         RouterModule, 
         SharedModule,
-        SharedRoutingModule,
         PokemonRoutingModule,
         ReactiveFormsModule,
         FormsModule,

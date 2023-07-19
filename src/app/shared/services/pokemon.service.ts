@@ -7,7 +7,9 @@ import { delay, map } from 'rxjs/operators';
 import { PokemonPaginationItem } from '../models/pokemon-pagination-item.model';
 import { ToastrService } from 'ngx-toastr';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PokemonService {
   readonly BASE_URL = 'https://pokeapi.co/api/v2'
   readonly MAX_POKEMON_ID = 1010
