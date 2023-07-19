@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { authReponseData } from './auth.model';
 import { User } from '../shared/models/user.model';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   readonly BASE_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:'
-  readonly API_KEY = 'AIzaSyCXs0MoZt2mSpn7JB4zy9u5GY7XsmmHA3U'
   errorMessages = {
     EMAIL_EXISTS: 'This email is associated with an existing user, please use another email',
     TOO_MANY_ATTEMPTS_TRY_LATER: 'Unusual activity detected. Try again later',
@@ -25,7 +25,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
 
   signUp(email: string, password: string): Observable<authReponseData> {
-    return this.http.post<authReponseData>(`${this.BASE_URL}signUp?key=${this.API_KEY}`,
+    return this.http.post<authReponseData>(`${this.BASE_URL}signUp?key=${environment.FIRE_BASE_API_KEY}`,
       {
         email: email,
         password: password,
@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   logIn(email: string, password: string): Observable<authReponseData> {
-    return this.http.post<authReponseData>(`${this.BASE_URL}signInWithPassword?key=${this.API_KEY}`,
+    return this.http.post<authReponseData>(`${this.BASE_URL}signInWithPassword?key=${environment.FIRE_BASE_API_KEY}`,
       {
         email: email,
         password: password,
@@ -57,7 +57,7 @@ export class AuthService {
     const userData = JSON.parse(localStorage.getItem('userData'))
     if (userData) {
       const user = new User(userData.id, userData.email, userData._token, new Date(userData._tokenExpirationDate))
-      if(user.token) {
+      if (user.token) {
         this.user.next(user)
         const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime()
         this.autoLogOut(expirationDuration)
@@ -74,7 +74,7 @@ export class AuthService {
     this.tokenExpirationTimer = null
     this.router.navigate(['auth'])
   }
-  
+
   autoLogOut(expirationDuration: number): void {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logOut()
