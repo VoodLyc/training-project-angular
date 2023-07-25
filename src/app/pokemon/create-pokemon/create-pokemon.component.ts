@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PokemonService } from '../../../shared/services/pokemon.service';
-import { PokemonPaginationItem } from '../../../shared/models/pokemon-pagination-item.model';
+import { PokemonService } from '../../shared/services/pokemon.service';
+import { PokemonPaginationItem } from '../../shared/models/pokemon-pagination-item.model';
 import { AbstractControl, FormControl, FormGroup, Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Observable, Subject, switchMap, takeUntil } from 'rxjs';
-import { Pokemon } from '../../../shared/models/pokemon.model';
+import { Pokemon } from '../../shared/models/pokemon.model';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

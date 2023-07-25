@@ -3,7 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { PokemonComponent } from "./pokemon.component";
 import { IsAuthGuard } from "../auth/auth.guard";
 import { ComparePokemonComponent } from "./compare-pokemon/compare-pokemon.component";
-import { CreatePokemonComponent } from "./create-pokemon/create-pokemon/create-pokemon.component";
+import { CreatePokemonComponent } from "./create-pokemon/create-pokemon.component";
 import { ViewPokemonComponent } from "./view-pokemon/view-pokemon.component";
 
 const pokemonRoutes: Routes = [
