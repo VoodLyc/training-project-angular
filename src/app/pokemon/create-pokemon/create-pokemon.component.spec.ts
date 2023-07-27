@@ -75,6 +75,67 @@ describe('CreatePokemonComponent', () => {
     expect(nameControl.errors['maxlength']).toBeTruthy()
   }))
 
+  it('should mark weight as invalid if it\'s empty', () => {
+    const weightControl = component.createPokemonForm.get('bmi').get('weight')
+    expect(weightControl.errors['required']).toBeTruthy()
+    expect(weightControl.valid).not.toBeTruthy()
+
+    weightControl.setValue(600)
+    expect(weightControl.valid).toBeTruthy()
+  })
+
+  it('should mark weight as invalid if it\'s greater than 9999', () => {
+    const weightControl = component.createPokemonForm.get('bmi').get('weight')
+    
+    weightControl.setValue(1200)
+    expect(weightControl.valid).toBeTruthy()
+
+    weightControl.setValue(99999)
+    expect(weightControl.errors['max']).toBeTruthy()
+    expect(weightControl.valid).not.toBeTruthy()
+  })
+
+  it('should mark height as invalid if it\'s empty', () => {
+    const heightControl = component.createPokemonForm.get('bmi').get('height')
+    expect(heightControl.errors['required']).toBeTruthy()
+    expect(heightControl.valid).not.toBeTruthy()
+
+    heightControl.setValue(14)
+    expect(heightControl.valid).toBeTruthy()
+  })
+
+  it('should mark height as invalid if it\'s greater than 999', () => {
+    const heightControl = component.createPokemonForm.get('bmi').get('height')
+
+    heightControl.setValue(80)
+    expect(heightControl.valid).toBeTruthy()
+
+    heightControl.setValue(9999)
+    expect(heightControl.errors['max']).toBeTruthy()
+    expect(heightControl.valid).not.toBeTruthy()
+  })
+
+  it('should mark experience as invalid if it\'s empty', () => {
+    const experienceControl = component.createPokemonForm.get('experience')
+
+    expect(experienceControl.errors['required']).toBeTruthy()
+    expect(experienceControl.valid).not.toBeTruthy()
+
+    experienceControl.setValue(400)
+    expect(experienceControl.valid).toBeTruthy()
+  });
+
+  it('should mark experience as invalid if it\'s greater than 999', () => {
+    const experienceControl = component.createPokemonForm.get('experience')
+
+    experienceControl.setValue(500)
+    expect(experienceControl.valid).toBeTruthy()
+
+    experienceControl.setValue(9999)
+    expect(experienceControl.errors['max']).toBeTruthy()
+    expect(experienceControl.valid).not.toBeTruthy()
+  });
+
   it('should mark type as invalid if the pokemon is of type Dragon and the experience is less than 500', () => {
     const typeControl = component.createPokemonForm.get('type')
     const experienceControl = component.createPokemonForm.get('experience')
